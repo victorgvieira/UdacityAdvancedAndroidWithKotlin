@@ -40,9 +40,16 @@ private val FLAGS = 0
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
     // Create the content intent for the notification, which launches
     // this activity
-    // TODO: Step 1.11 create intent
+    // DONE: Step 1.11 create intent
+    val intent = Intent(applicationContext, MainActivity::class.java)
 
-    // TODO: Step 1.12 create PendingIntent
+    // DONE: Step 1.12 create PendingIntent
+    val contentPendingIntent = PendingIntent.getActivity(
+        applicationContext,
+        NOTIFICATION_ID,
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
     // TODO: Step 2.0 add style
 
@@ -51,8 +58,8 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
     // DONE: Step 1.2 get an instance of NotificationCompat.Builder
     // Build the notification
     val builder = NotificationCompat.Builder(
-            applicationContext,
-            applicationContext.getString(R.string.egg_notification_channel_id)
+        applicationContext,
+        applicationContext.getString(R.string.egg_notification_channel_id)
     )
 
 
@@ -63,9 +70,11 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         setContentTitle(applicationContext.getText(R.string.notification_title))
         setContentText(messageBody)
         setSmallIcon(R.drawable.cooked_egg)
+        // DONE: Step 1.13 set content intent
+        setContentIntent(contentPendingIntent)
+        /*NOTE makes the notification dismiss when user click it*/
+        setAutoCancel(true)
     }
-
-    // TODO: Step 1.13 set content intent
 
     // TODO: Step 2.1 add style to builder
 

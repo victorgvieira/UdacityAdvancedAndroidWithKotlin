@@ -87,4 +87,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
 
 }
 
-// TODO: Step 1.14 Cancel all notifications
+// DONE: Step 1.14 Cancel all notifications
+fun NotificationManager.cancelAllNotifications() {
+    cancelAll()
+}

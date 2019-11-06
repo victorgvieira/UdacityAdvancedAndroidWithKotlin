@@ -51,7 +51,13 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    // TODO: Step 2.0 add style
+    // DONE: Step 2.0 add style
+    val eggPicture =
+        BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cooked_egg)
+    val bigPictureStyle = NotificationCompat.BigPictureStyle()
+        .bigPicture(eggPicture)
+        .bigLargeIcon(null)// NOTE: Set this to null to hide the large icon when the notification is expanded
+
 
     // TODO: Step 2.2 add snooze action
 
@@ -72,11 +78,13 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         setSmallIcon(R.drawable.cooked_egg)
         // DONE: Step 1.13 set content intent
         setContentIntent(contentPendingIntent)
-        /*NOTE makes the notification dismiss when user click it*/
-        setAutoCancel(true)
+        // DONE: Step 2.1 add style to builder
+        setStyle(bigPictureStyle)
+        setLargeIcon(eggPicture)
+
+        setAutoCancel(true)// NOTE: makes the notification dismiss when user click it*/
     }
 
-    // TODO: Step 2.1 add style to builder
 
     // TODO: Step 2.3 add snooze action
 

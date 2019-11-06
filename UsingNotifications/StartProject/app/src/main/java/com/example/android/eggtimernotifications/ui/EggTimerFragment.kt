@@ -67,7 +67,9 @@ class EggTimerFragment : Fragment() {
                 NotificationChannel(
                     channelId,
                     channelName,
-                    NotificationManager.IMPORTANCE_LOW
+                    // NOTE: above API 25, the importance is changed at the channel
+                    // DONE: Step 2.4 set priority NOTE: it's not listed in the checkout repository
+                    NotificationManager.IMPORTANCE_HIGH
                 ).apply {
                     enableLights(true)
                     enableVibration(true)

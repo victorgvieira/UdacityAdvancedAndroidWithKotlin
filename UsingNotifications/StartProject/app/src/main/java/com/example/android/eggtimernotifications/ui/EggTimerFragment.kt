@@ -75,6 +75,9 @@ class EggTimerFragment : Fragment() {
                     enableVibration(true)
                     description = "Time for breakfast"
                     lightColor = Color.RED
+                    // NOTE: by default, a channel show a dot on the app icon when a notification is showed
+                    // DONE: 2.6 disable badges for this channel NOTE: it's not listed in the checkout repository
+                    setShowBadge(false)
                 }
             val notificationManager =
                 requireActivity().getSystemService(NotificationManager::class.java) as NotificationManager

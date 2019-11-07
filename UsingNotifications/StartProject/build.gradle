@@ -20,14 +20,14 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        // DONE: 3.1 add dependecy for google services NOTE: it's not listed in the checkout repository
+        // DONE: 3.0.1 add dependecy for google services NOTE: it's not listed in the checkout repository
         classpath 'com.google.gms:google-services:4.3.2'
     }
 }
@@ -36,7 +36,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+
     }
 }
 

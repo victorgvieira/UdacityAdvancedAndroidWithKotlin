@@ -56,10 +56,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     //for fcm
-    implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-iid:19.0.1'
-    implementation 'com.google.firebase:firebase-messaging:19.0.1'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-iid:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'android.arch.work:work-runtime:1.0.1'
 }
-// DONE: 3.2 add plugin for google play services NOTE: it's not listed in the checkout repository
+// DONE: 3.0.2 add plugin for google play services NOTE: it's not listed in the checkout repository
 apply plugin: 'com.google.gms.google-services'

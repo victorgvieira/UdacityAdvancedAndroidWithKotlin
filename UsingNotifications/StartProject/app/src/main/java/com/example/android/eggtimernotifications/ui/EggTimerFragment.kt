@@ -24,14 +24,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.example.android.eggtimernotifications.BuildConfig
 import com.example.android.eggtimernotifications.R
 import com.example.android.eggtimernotifications.databinding.FragmentEggTimerBinding
-import com.google.firebase.messaging.FirebaseMessaging
 
 class EggTimerFragment : Fragment() {
 
@@ -57,6 +54,13 @@ class EggTimerFragment : Fragment() {
             getString(R.string.egg_notification_channel_name)
         )
 
+        // DONE: Step 3.1 create a new channel for FCM. NOTE: it's not listed in the checkout repository
+        // NOTE: It is a good idea to create a new notification channel for the FCM
+        // since your users may want to enable/disable egg timer or FCM push notifications separately
+        createChannel(
+            getString(R.string.breakfast_notification_channel_id),
+            getString(R.string.breakfast_notification_channel_name)
+        )
         return binding.root
     }
 
@@ -68,7 +72,7 @@ class EggTimerFragment : Fragment() {
                     channelId,
                     channelName,
                     // NOTE: above API 25, the importance is changed at the channel
-                    // DONE: Step 2.4 set priority NOTE: it's not listed in the checkout repository
+                    // DONE: Step 2.4 set priority. NOTE: it's not listed in the checkout repository
                     NotificationManager.IMPORTANCE_HIGH
                 ).apply {
                     enableLights(true)

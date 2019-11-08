@@ -24,11 +24,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.eggtimernotifications.R
 import com.example.android.eggtimernotifications.databinding.FragmentEggTimerBinding
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 
 class EggTimerFragment : Fragment() {
 
@@ -61,6 +64,8 @@ class EggTimerFragment : Fragment() {
             getString(R.string.breakfast_notification_channel_id),
             getString(R.string.breakfast_notification_channel_name)
         )
+        // DONE: Step 3.4 call subscribe topics on start. NOTE: it's not listed in the checkout repository
+        subscribeToTopic()
         return binding.root
     }
 
@@ -80,7 +85,7 @@ class EggTimerFragment : Fragment() {
                     description = "Time for breakfast"
                     lightColor = Color.RED
                     // NOTE: by default, a channel show a dot on the app icon when a notification is showed
-                    // DONE: 2.6 disable badges for this channel NOTE: it's not listed in the checkout repository
+                    // DONE: 2.6 disable badges for this channel. NOTE: it's not listed in the checkout repository
                     setShowBadge(false)
                 }
             val notificationManager =
@@ -94,6 +99,18 @@ class EggTimerFragment : Fragment() {
 
     companion object {
         fun newInstance() = EggTimerFragment()
+    }
+
+    // DONE: Step 3.3 subscribe to breakfast topic. NOTE: it's not listed in the checkout repository
+    private fun subscribeToTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC).addOnCompleteListener {
+            //  Initialize with success message
+            var msgResult = getString(R.string.message_subscribed)
+            if (!it.isSuccessful) {
+                msgResult = getString(R.string.message_subscribe_failed)
+            }
+            Toast.makeText(context, msgResult, Toast.LENGTH_SHORT).show()
+        }
     }
 }
 

@@ -1,6 +1,9 @@
 package com.example.android.eggtimernotifications
 
+import android.app.NotificationManager
 import android.util.Log
+import androidx.core.content.ContextCompat
+import com.example.android.eggtimernotifications.util.sendNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -15,11 +18,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Check is message contains a data payload
         // NOTE: Using firebase-messaging version 20.0.0 the remote message and data is not null
         remoteMessage.data.let {
-            Log.d(TAG, "Message data payload: " + remoteMessage.data)
+            Log.d(TAG, "Message data payload: $it")
         }
 
-        // TODO step 3.6 check messages for notifications and call sendNotifications. NOTE: it's not listed in the checkout repository
+        // DONE step 3.6 check messages for notifications and call sendNotifications. NOTE: it's not listed in the checkout repository
         // Check is message contains a notification payload
+        remoteMessage.notification?.let {
+            Log.d(TAG, "Message notification body: ${it.body}")
+            // Do this to avoid null pointer
+            it.body?.let { body ->
+                sendNotification(body)
+            }
+        }
 
     }
     // [END receive_message]
@@ -49,5 +59,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * */
     private fun sendRegistrationToServer(token: String?) {
         // TODO: implement this method to send token to your app server.
+    }
+
+    /**
+     * Create and show simple notification containing the received FCM message.
+     *
+     * @param messageBody FCM message body received.
+     * */
+    private fun sendNotification(messageBody: String) {
+        val notificationManager =
+            ContextCompat.getSystemService(
+                applicationContext,
+                NotificationManager::class.java
+            ) as NotificationManager
+
+        notificationManager.sendNotification(messageBody, applicationContext)
+
     }
 }

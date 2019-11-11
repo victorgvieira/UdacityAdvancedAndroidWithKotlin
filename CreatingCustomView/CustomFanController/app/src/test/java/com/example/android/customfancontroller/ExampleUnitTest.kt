@@ -1,4 +1,4 @@
-package com.evowake.creatingcustomview
+package com.example.android.customfancontroller
 
 import org.junit.Test
 

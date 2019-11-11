@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--DONE: Step 1.1 create dimens.xml file in the values folder-->
+<resources>
+    <!--DONE: Step 1.2 add the following dimensions -->
+    <dimen name="text_view_padding">16dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="margin_top">24dp</dimen>
+    <dimen name="fan_dimen">250dp</dimen>
+</resources>

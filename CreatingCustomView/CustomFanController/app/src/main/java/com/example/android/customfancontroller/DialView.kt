@@ -2,11 +2,12 @@ package com.example.android.customfancontroller
 
 //  DONE: Step 1.6 Create a new Kotlin class called DialView
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.PointF
-import android.graphics.Typeface
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import kotlin.math.cos
+import kotlin.math.min
+import kotlin.math.sin
 
 //  DONE: Step 1.9 Above the DialView class definition, just below the imports, add a top-level enum to represent the available fan speeds
 // OFF, LOW, MEDIUM, HIGH with respective values from R.string.fan_*
@@ -31,7 +32,7 @@ class DialView @JvmOverloads constructor(
 
     //  DONE: Step 1.11 Define several private variables you need in order to draw the custom view.
     //  Import android.graphics.PointF if requested.
-    // NOTE: These values are created and initialized here instead of when the view is actually drawn
+    // NOTE: These values are created and initialized here instead of when the view is actually draw
     // to ensure that the actual drawing step runs as fast as possible.
     // Radius of the circle. Set when the view is run on the screen
     private var radius = 0.0f
@@ -47,5 +48,92 @@ class DialView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
         textSize = 55.0f
         typeface = Typeface.create("", Typeface.BOLD)
+    }
+
+    // DONE: Step 2.0 override the onSizeChanged() method to calculate the size for the custom view's dial.
+    // Import kotlin.math.min when requested.
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        // remove the super call
+//        super.onSizeChanged(w, h, oldw, oldh)
+        radius = (min(width, height) / 2.0 * 0.8).toFloat()
+    }
+
+    // DONE: Step 2.1 add the code to define a computeXYForSpeed() extension function for the PointF class.
+    private fun PointF.computeXYForSpeed(pos: FanSpeed, radius: Float) {
+
+        // DONE: Step 2.2 add the code to calculates the X, Y coordinates on the screen for the text label and current indicator (0, 1, 2, or 3),
+        // given the current FanSpeed position and radius of the dial. You'll use this in onDraw().
+        // Import kotlin.math.cos and kotlin.math.sin when requested.
+        // Angles are in radians.
+        val startAngle = Math.PI * (9 / 8.0)
+        val angle = startAngle + pos.ordinal * (Math.PI / 4)
+        x = (radius * cos(angle)).toFloat() + width / 2
+        y = (radius * sin(angle)).toFloat() + height / 2
+    }
+
+    // DONE: Step 2.3 override onDraw() method to render the view on the screen with the Canvas and Paint classes
+//    Import android.graphics.Canvas when requested.
+    override fun onDraw(canvas: Canvas?) {
+        // keep the super call
+        super.onDraw(canvas)
+        canvas?.apply {
+            // DONE: Step 2.4 set the paint color to gray (Color.GRAY) or green (Color.GREEN)
+            // depending on whether the fan speed is OFF or any other value.
+            // Import android.graphics.Color when requested.
+            paint.color = if (fanSpeed == FanSpeed.OFF) Color.GRAY else Color.GREEN
+
+            // DONE: Step 2.5 call drawCircle() to draw the circle for the dial
+            // This method uses the current view width and height to find the center of the circle, the radius of the circle, and the current paint color.
+            // The width and height properties are members of the View superclass and indicate the current dimensions of the view.
+            /*STEP USING LESSON CODE*/
+            // drawCircle((width / 2).toFloat(), (height / 2).toFloat(), radius, paint)
+            /*STEP USING CUSTOM CODE*/
+            drawDialCircle()
+
+            // DONE: Step 2.6 call drawCircle() to draw the circle for the fan speed indicator mark
+            // This part uses the PointF.computeXYforSpeed() extension method to calculate the X,Y coordinates
+            // for the indicator center based on the current fan speed.
+            /*STEP USING LESSON CODE*/
+//            val markerRadius = radius + RADIUS_OFFSET_INDICATOR
+//            pointPosition.computeXYForSpeed(fanSpeed, markerRadius)
+//            paint.color = Color.BLACK
+//            drawCircle(pointPosition.x, pointPosition.y, radius / 12, paint)
+            /*STEP USING CUSTOM CODE*/
+            drawFanSpeedCircle()
+
+            // DONE: Step 2.7 draw the fan speed labels (0, 1, 2, 3) around the dial using drawText()
+            // we call PointF.computeXYForSpeed() again to get the position for each label,
+            // and reuses the pointPosition object each time to avoid allocations
+            /*STEP USING LESSON CODE*/
+//            val labelRadius = radius + RADIUS_OFFSET_LABEL
+//            for (fanSpeed in FanSpeed.values()) {
+//                pointPosition.computeXYForSpeed(fanSpeed, labelRadius)
+//                val label = resources.getString(fanSpeed.label)
+//                drawText(label, pointPosition.x, pointPosition.y, paint)
+//            }
+            /*STEP USING CUSTOM CODE*/
+            drawFanSpeedLabels()
+        }
+    }
+
+    /* For purpose of learning were created extended functions for drawing on canvas*/
+    private fun Canvas.drawDialCircle() {
+        drawCircle((width / 2).toFloat(), (height / 2).toFloat(), radius, paint)
+    }
+
+    private fun Canvas.drawFanSpeedCircle() {
+        val markerRadius = radius + RADIUS_OFFSET_INDICATOR
+        pointPosition.computeXYForSpeed(fanSpeed, markerRadius)
+        paint.color = Color.BLACK
+        drawCircle(pointPosition.x, pointPosition.y, radius / 12, paint)
+    }
+
+    private fun Canvas.drawFanSpeedLabels() {
+        val labelRadius = radius + RADIUS_OFFSET_LABEL
+        for (fanSpeed in FanSpeed.values()) {
+            pointPosition.computeXYForSpeed(fanSpeed, labelRadius)
+            val label = resources.getString(fanSpeed.label)
+            drawText(label, pointPosition.x, pointPosition.y, paint)
+        }
     }
 }

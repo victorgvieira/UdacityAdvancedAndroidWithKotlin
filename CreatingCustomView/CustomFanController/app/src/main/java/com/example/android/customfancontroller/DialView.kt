@@ -5,18 +5,28 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
 //  DONE: Step 1.9 Above the DialView class definition, just below the imports, add a top-level enum to represent the available fan speeds
-// OFF, LOW, MEDIUM, HIGH with respective values from R.string.fan_*
+//      OFF, LOW, MEDIUM, HIGH with respective values from R.string.fan_*
 //  Note that this enum is of type Int because the values are string resources rather than actual strings.
 private enum class FanSpeed(val label: Int) {
     OFF(R.string.fan_off),
     LOW(R.string.fan_low),
     MEDIUM(R.string.fan_medium),
     HIGH(R.string.fan_high);
+
+    //DONE: Step 3.0 add an extension function next() that changes the current fan speed
+    //  to the next speed in the list (from OFF to LOW, MEDIUM, and HIGH, and then back to OFF
+    fun next() = when (this) {
+        OFF -> LOW
+        LOW -> MEDIUM
+        MEDIUM -> HIGH
+        HIGH -> OFF
+    }
 }
 
 //  DONE: Step 1.10 add constants RADIUS_OFFSET_LABEL = 30 and RADIUS_OFFSET_INDICATOR = -35. You'll use these as part of drawing the dial indicators and labels
@@ -31,7 +41,7 @@ class DialView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     //  DONE: Step 1.11 Define several private variables you need in order to draw the custom view.
-    //  Import android.graphics.PointF if requested.
+    //      Import android.graphics.PointF if requested.
     // NOTE: These values are created and initialized here instead of when the view is actually draw
     // to ensure that the actual drawing step runs as fast as possible.
     // Radius of the circle. Set when the view is run on the screen
@@ -42,7 +52,7 @@ class DialView @JvmOverloads constructor(
     private val pointPosition: PointF = PointF(0.0f, 0.0f)
 
     //  DONE: Step 1.12 initialize a Paint object with a handful of basic styles.
-    //  Import android.graphics.Paint and android.graphics.Typeface when requested
+    //      Import android.graphics.Paint and android.graphics.Typeface when requested
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         textAlign = Paint.Align.CENTER
@@ -50,8 +60,30 @@ class DialView @JvmOverloads constructor(
         typeface = Typeface.create("", Typeface.BOLD)
     }
 
+    // DONE: Step 3.1 add an init() block.
+    //  Setting the view's isClickable property to true enables that view to accept user input
+    init {
+        isClickable = true
+    }
+
+    // DONE: Step 3.2 override the performClick() with given code
+    override fun performClick(): Boolean {
+        // if this method was handled by any custom onClickListener method, then return
+        // NOTE: super.performClick() must happen first, which enables accessibility events as well as calls onClickListener()
+        if (super.performClick()) return true
+
+        fanSpeed = fanSpeed.next()
+        // set view content description for Accessibility
+        contentDescription = resources.getString(fanSpeed.label)
+        // invalidate to redraw the view
+        invalidate()
+        // Tell that this method was handled
+        return true
+
+    }
+
     // DONE: Step 2.0 override the onSizeChanged() method to calculate the size for the custom view's dial.
-    // Import kotlin.math.min when requested.
+    //  Import kotlin.math.min when requested.
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         // remove the super call
 //        super.onSizeChanged(w, h, oldw, oldh)
@@ -62,8 +94,8 @@ class DialView @JvmOverloads constructor(
     private fun PointF.computeXYForSpeed(pos: FanSpeed, radius: Float) {
 
         // DONE: Step 2.2 add the code to calculates the X, Y coordinates on the screen for the text label and current indicator (0, 1, 2, or 3),
-        // given the current FanSpeed position and radius of the dial. You'll use this in onDraw().
-        // Import kotlin.math.cos and kotlin.math.sin when requested.
+        //  given the current FanSpeed position and radius of the dial. You'll use this in onDraw().
+        //  Import kotlin.math.cos and kotlin.math.sin when requested.
         // Angles are in radians.
         val startAngle = Math.PI * (9 / 8.0)
         val angle = startAngle + pos.ordinal * (Math.PI / 4)
@@ -72,14 +104,14 @@ class DialView @JvmOverloads constructor(
     }
 
     // DONE: Step 2.3 override onDraw() method to render the view on the screen with the Canvas and Paint classes
-//    Import android.graphics.Canvas when requested.
+    //    Import android.graphics.Canvas when requested.
     override fun onDraw(canvas: Canvas?) {
         // keep the super call
         super.onDraw(canvas)
         canvas?.apply {
             // DONE: Step 2.4 set the paint color to gray (Color.GRAY) or green (Color.GREEN)
-            // depending on whether the fan speed is OFF or any other value.
-            // Import android.graphics.Color when requested.
+            //  depending on whether the fan speed is OFF or any other value.
+            //  Import android.graphics.Color when requested.
             paint.color = if (fanSpeed == FanSpeed.OFF) Color.GRAY else Color.GREEN
 
             // DONE: Step 2.5 call drawCircle() to draw the circle for the dial
@@ -102,7 +134,7 @@ class DialView @JvmOverloads constructor(
             drawFanSpeedCircle()
 
             // DONE: Step 2.7 draw the fan speed labels (0, 1, 2, 3) around the dial using drawText()
-            // we call PointF.computeXYForSpeed() again to get the position for each label,
+            //  we call PointF.computeXYForSpeed() again to get the position for each label,
             // and reuses the pointPosition object each time to avoid allocations
             /*STEP USING LESSON CODE*/
 //            val labelRadius = radius + RADIUS_OFFSET_LABEL

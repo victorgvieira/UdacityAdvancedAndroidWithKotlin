@@ -6,6 +6,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
+import androidx.core.content.withStyledAttributes
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -60,10 +61,24 @@ class DialView @JvmOverloads constructor(
         typeface = Typeface.create("", Typeface.BOLD)
     }
 
+    // DONE: Step 4.3 declare variables to cache the attribute values
+    private var fanSpeedLowColor = 0
+    private var fanSpeedMediumColor = 0
+    private var fanSpeedMaxColor = 0
+
+
     // DONE: Step 3.1 add an init() block.
     //  Setting the view's isClickable property to true enables that view to accept user input
     init {
         isClickable = true
+
+        // DONE: Step 4.4 add the following code using the withStyledAttributes extension function.
+        //  You supply the attributes and view, and set your local variables
+        context.withStyledAttributes(attrs, R.styleable.DialView) {
+            fanSpeedLowColor = getColor(R.styleable.DialView_fanColor1, 0)
+            fanSpeedMediumColor = getColor(R.styleable.DialView_fanColor2, 0)
+            fanSpeedMaxColor = getColor(R.styleable.DialView_fanColor3, 0)
+        }
     }
 
     // DONE: Step 3.2 override the performClick() with given code
@@ -112,7 +127,16 @@ class DialView @JvmOverloads constructor(
             // DONE: Step 2.4 set the paint color to gray (Color.GRAY) or green (Color.GREEN)
             //  depending on whether the fan speed is OFF or any other value.
             //  Import android.graphics.Color when requested.
-            paint.color = if (fanSpeed == FanSpeed.OFF) Color.GRAY else Color.GREEN
+            // this code is not needed in step 4.5 and thereafter
+//            paint.color = if (fanSpeed == FanSpeed.OFF) Color.GRAY else Color.GREEN
+
+            // DONE: Step 4.5 et the dial color based on the current fan speed
+            paint.color = when (fanSpeed) {
+                FanSpeed.OFF -> Color.GRAY
+                FanSpeed.LOW -> fanSpeedLowColor
+                FanSpeed.MEDIUM -> fanSpeedMediumColor
+                FanSpeed.HIGH -> fanSpeedMaxColor
+            }
 
             // DONE: Step 2.5 call drawCircle() to draw the circle for the dial
             // This method uses the current view width and height to find the center of the circle, the radius of the circle, and the current paint color.

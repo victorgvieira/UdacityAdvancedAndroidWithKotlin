@@ -43,6 +43,9 @@
     -->
     <!-- Both DialView and the original ImageView inherit the standard attributes from the View class,
      so there is no need to change any of the other attributes  -->
+    <!--DONE: Step 4.2 add attributes for fanColor1, fanColor2, and fanColor3, and set their values-->
+    <!--NOTE: Use app: as the preface for the custom attribute (as in app:fanColor1) rather than android
+        because your custom attributes belong to the schemas.android.com/apk/res/your_app_package_name namespace rather than the android namespace.-->
     <com.example.android.customfancontroller.DialView
         android:id="@+id/dialView"
         android:layout_width="200dp"
@@ -50,6 +53,9 @@
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
+        app:fanColor1="@color/fanSpeedLowColor"
+        app:fanColor2="@color/fanSpeedMediumColor"
+        app:fanColor3="@color/fanSpeedMaxColor"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customViewLabel" />

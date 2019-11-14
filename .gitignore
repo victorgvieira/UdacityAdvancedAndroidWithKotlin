@@ -34,6 +34,7 @@
 
 # IntelliJ
 **/*.iml
+**/.idea/codeStyles/*
 **/.idea/workspace.xml
 **/.idea/tasks.xml
 **/.idea/gradle.xml
@@ -41,7 +42,10 @@
 **/.idea/dictionaries
 **/.idea/libraries
 **/.idea/caches
-
+**/.idea/misc.xml
+**/.idea/dbnavigator.xml
+**/.idea/runConfigurations.xml
+**/.idea/markdown-navigator.xml
 # Keystore files
 # Uncomment the following line if you do not want to check your keystore files in.
 #*.jks

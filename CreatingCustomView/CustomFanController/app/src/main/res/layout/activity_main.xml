@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--DONE: Step 1.4 Replace the existing TextView. This text acts as a label in the activity for the custom view.-->
+    <TextView
+        android:id="@+id/customViewLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/margin_top"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:padding="@dimen/text_view_padding"
+        android:text="@string/fan_control"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display3"
+        android:textColor="@android:color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--DONE: Step 1.5 Add an ImageView element to the layout. This is a placeholder for the custom view you will create
+    -->
+    <!--  this view is not needed in step 2.8 and thereafter  -->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/dialView"-->
+    <!--        android:layout_width="200dp"-->
+    <!--        android:layout_height="200dp"-->
+    <!--        android:layout_marginLeft="@dimen/default_margin"-->
+    <!--        android:layout_marginTop="@dimen/default_margin"-->
+    <!--        android:layout_marginRight="@dimen/default_margin"-->
+    <!--        android:background="@android:color/darker_gray"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/customViewLabel" />-->
+
+    <!--DONE: Step 2.8 change the ImageView tag for the dialView to com.example.android.customfancontroller.DialView
+    -->
+    <!--DONE: Step 2.9 Delete the android:background attribute
+    -->
+    <!-- Both DialView and the original ImageView inherit the standard attributes from the View class,
+     so there is no need to change any of the other attributes  -->
+    <!--DONE: Step 4.2 add attributes for fanColor1, fanColor2, and fanColor3, and set their values-->
+    <!--NOTE: Use app: as the preface for the custom attribute (as in app:fanColor1) rather than android
+        because your custom attributes belong to the schemas.android.com/apk/res/your_app_package_name namespace rather than the android namespace.-->
+    <com.example.android.customfancontroller.DialView
+        android:id="@+id/dialView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        app:fanColor1="@color/fanSpeedLowColor"
+        app:fanColor2="@color/fanSpeedMediumColor"
+        app:fanColor3="@color/fanSpeedMaxColor"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customViewLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

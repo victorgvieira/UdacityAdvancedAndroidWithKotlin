@@ -1,7 +1,10 @@
 <resources>
 
+    <!--DONE Step: 1.1 in AppTheme style, replace DarkActionBar with NoActionBar.
+            This removes the action bar, so that you can draw fullscreen.-->
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!--    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

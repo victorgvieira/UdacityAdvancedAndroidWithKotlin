@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Path
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 
@@ -42,6 +43,11 @@ class MyCanvasView(context: Context) : View(context) {
         strokeCap = Paint.Cap.ROUND // default: BUTT
         strokeWidth = STROKE_WIDTH // default: Hairline-width (really thin)
     }
+
+    // DONE Step: 7.0 add a variable path and initialize it with a Path object
+    //  to store the path that is being drawn when following the user's touch on the screen.
+    //  Import android.graphics.Path for the Path.
+    private val path = Path()
 
     // DONE Step: 4.3 override the onSizeChanged() method.
     //  This callback method is called by the Android system with the changed screen dimensions,

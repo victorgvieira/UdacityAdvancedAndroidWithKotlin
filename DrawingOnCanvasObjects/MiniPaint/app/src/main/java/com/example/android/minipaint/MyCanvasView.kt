@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 
@@ -15,7 +16,6 @@ private const val STROKE_WIDTH = 12f // has to be float
 // DONE Step: 2.1 make MyCanvasView class extends View class passing the context
 // DONE Step: 2.2 follow sugested imports
 class MyCanvasView(context: Context) : View(context) {
-
     // These are your bitmap and canvas for caching what has been drawn before
     // DONE Step: 4.0 define member variable for a bitmap called extraBitmap
     private lateinit var extraBitmap: Bitmap
@@ -48,6 +48,12 @@ class MyCanvasView(context: Context) : View(context) {
     //  to store the path that is being drawn when following the user's touch on the screen.
     //  Import android.graphics.Path for the Path.
     private val path = Path()
+
+    //  DONE Step: 8.1 add the motionTouchEventX and motionTouchEventY variables
+    //   for caching the x and y coordinates of the current touch event (the MotionEvent coordinates).
+    //   Initialize them to 0f.
+    private var motionTouchEventX = 0f
+    private var motionTouchEventY = 0f
 
     // DONE Step: 4.3 override the onSizeChanged() method.
     //  This callback method is called by the Android system with the changed screen dimensions,
@@ -85,5 +91,39 @@ class MyCanvasView(context: Context) : View(context) {
         //  Note: The 2D coordinate system used for drawing on a Canvas is in pixels,
         //  and the origin (0,0) is at the top left corner of the Canvas.
         canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
+    }
+
+    //  DONE Step: 8.0 override the onTouchEvent() method
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        // NOTE: Remove super
+//        return super.onTouchEvent(event)
+        // NOTE: Since event could be null, lets call nullable check only one time
+        event?.also {
+            // DONE Step: 8.2 cache the x and y coordinates of the passed in event.
+            motionTouchEventX = it.x
+            motionTouchEventY = it.y
+
+            // DONE Step: 8.3 use a when expression to handle motion events for touching down on the screen,
+            //   moving on the screen, and releasing touch on the screen.
+            //   These are the events of interest for drawing a line on the screen.
+            //   For each event type, call a utility method
+            // See the MotionEvent class documentation for a full list of touch events
+            when (it.action) {
+                MotionEvent.ACTION_DOWN -> touchStart()
+                MotionEvent.ACTION_MOVE -> touchMove()
+                MotionEvent.ACTION_UP -> touchUp()
+            }
+        }
+        return true
+    }
+
+    // DONE Step: 8.4 Create stubs for the three functions touchStart(), touchMove(), and touchUp().
+    private fun touchUp() {
+    }
+
+    private fun touchMove() {
+    }
+
+    private fun touchStart() {
     }
 }

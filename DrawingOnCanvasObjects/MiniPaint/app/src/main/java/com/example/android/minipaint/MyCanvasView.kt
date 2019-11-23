@@ -3,8 +3,12 @@ package com.example.android.minipaint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+
+// DONE Step: 6.0 define a constant for the stroke width
+private const val STROKE_WIDTH = 12f // has to be float
 
 // DONE Step: 2.0 create the file MyCanvasView
 // DONE Step: 2.1 make MyCanvasView class extends View class passing the context
@@ -20,6 +24,24 @@ class MyCanvasView(context: Context) : View(context) {
     // DONE Step: 4.2 define a class level variable backgroundColor, for the background color of the canvas
     //  and initialize it to the R.color.colorBackground
     private val backgroundColor = ResourcesCompat.getColor(resources, R.color.colorBackground, null)
+
+    // DONE Step: 6.1 define a variable drawColor for holding the color to draw with
+    //  and initialize it with the colorPaint R.color.colorPaint
+    private val drawColor = ResourcesCompat.getColor(resources, R.color.colorPaint, null)
+
+    // DONE Step: 6.2 add a variable paint for a Paint object and initialize it with given code
+    //  Set up the paint with which to draw.
+    private val paint = Paint().apply {
+        color = drawColor
+        //  Smooths out edges of what is draw without affecting shape.
+        isAntiAlias = true
+        // Dithering affects how colors with higher-precision than the device are down-sampled.
+        isDither = true
+        style = Paint.Style.STROKE  // default: FILL
+        strokeJoin = Paint.Join.ROUND   // default: MITER
+        strokeCap = Paint.Cap.ROUND // default: BUTT
+        strokeWidth = STROKE_WIDTH // default: Hairline-width (really thin)
+    }
 
     // DONE Step: 4.3 override the onSizeChanged() method.
     //  This callback method is called by the Android system with the changed screen dimensions,

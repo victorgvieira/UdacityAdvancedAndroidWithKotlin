@@ -131,6 +131,8 @@ class MyCanvasView(context: Context) : View(context) {
 
     // DONE Step: 8.4 Create stubs for the three functions touchStart(), touchMove(), and touchUp().
     private fun touchUp() {
+        // DONE Step: 11.0 Reset the path so it doesn't get drawn again.
+        path.reset()
     }
 
     private fun touchMove() {

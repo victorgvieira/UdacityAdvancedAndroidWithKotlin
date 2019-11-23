@@ -7,7 +7,9 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import androidx.core.content.res.ResourcesCompat
+import kotlin.math.abs
 
 // DONE Step: 6.0 define a constant for the stroke width
 private const val STROKE_WIDTH = 12f // has to be float
@@ -60,6 +62,9 @@ class MyCanvasView(context: Context) : View(context) {
     //  these are the starting point for the next path (the next segment of the line to draw).
     private var currentY = 0f
     private var currentX = 0f
+
+    // DONE Step: 10.0 add a touchTolerance variable and set it to ViewConfiguration.get(context).scaledTouchSlop.
+    private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
 
 
     // DONE Step: 4.3 override the onSizeChanged() method.
@@ -129,6 +134,36 @@ class MyCanvasView(context: Context) : View(context) {
     }
 
     private fun touchMove() {
+        // DONE Step: 10.1 Calculate the traveled distance (dx, dy)
+        val dx = abs(motionTouchEventX - currentX)
+        val dy = abs(motionTouchEventY - currentY)
+
+        // DONE Step: 10.2 check if the moved distance is above the touchTolerance value
+        if (dx >= touchTolerance || dy >= touchTolerance) {
+            // DONE Step: 10.3 create a curve between the two points and store it in path
+            // QuadTo() adds a quadratic bezier from the last point,
+            // approaching control point (x1,y1), and ending at (x2,y2).
+            path.quadTo(
+                currentX,
+                currentY,
+                (motionTouchEventX + currentX) / 2,
+                (motionTouchEventY + currentY) / 2
+            )
+            // DONE Step: 10.4 update the running currentX and currentY tally
+            currentX = motionTouchEventX
+            currentY = motionTouchEventY
+            // DONE Step: 10.5 and draw the path
+            // Draw the path in the extra bitmap to cache it.
+            extraCanvas.drawPath(path, paint)
+        }
+        // DONE Step: 10.6 call invalidate() to force redrawing of the screen with the updated path
+        invalidate()
+
+        /*NOTES:    Calculate the distance that has been moved (dx, dy).
+                    If the movement was further than the touch tolerance, add a segment to the path.
+                    Set the starting point for the next segment to the endpoint of this segment.
+                    Using quadTo() instead of lineTo() create a smoothly drawn line without corners. See Bezier Curves.
+                    Call invalidate() to (eventually call onDraw() and) redraw the view.*/
     }
 
     // DONE Step: 9.1 implement the touchStart()

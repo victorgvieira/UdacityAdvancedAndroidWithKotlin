@@ -1,6 +1,7 @@
 package com.example.android
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
@@ -57,6 +58,59 @@ class ClippedView @JvmOverloads constructor(
     private val rowThree = rowTwo + rectInset + clipRectBottom
     private val rowFour = rowThree + rectInset + clipRectBottom
     private val textRow = rowFour + (1.5f * clipRectBottom)
+
+    // DONE: Step 6.0 Override onDraw() and call a function for each shape you are drawing.
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+        drawBackAndUnclippedRectangle(canvas)
+        drawDifferenceClippingExample(canvas)
+        drawCircularClippingExample(canvas)
+        drawIntersectionClippingExample(canvas)
+        drawCombinedClippingExample(canvas)
+        drawRoundedRectangleClippingExample(canvas)
+        drawOutsideClippingExample(canvas)
+        drawSkewedTextExample(canvas)
+        drawTranslatedTextExample(canvas)
+        // drawQuickRejectExamples(canvas)
+    }
+
+    // DONE: Step 6.1 Create stubs for each of the drawing functions
+    //  so that the code will continue to compile.
+    private fun drawTranslatedTextExample(canvas: Canvas?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun drawSkewedTextExample(canvas: Canvas?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun drawOutsideClippingExample(canvas: Canvas?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun drawRoundedRectangleClippingExample(canvas: Canvas?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun drawCombinedClippingExample(canvas: Canvas?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun drawIntersectionClippingExample(canvas: Canvas?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun drawCircularClippingExample(canvas: Canvas?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun drawDifferenceClippingExample(canvas: Canvas?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun drawBackAndUnclippedRectangle(canvas: Canvas?) {
+
+    }
 
 
 }

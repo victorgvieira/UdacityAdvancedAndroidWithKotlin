@@ -1,10 +1,7 @@
 package com.example.android.minipaint
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -66,6 +63,8 @@ class MyCanvasView(context: Context) : View(context) {
     // DONE Step: 10.0 add a touchTolerance variable and set it to ViewConfiguration.get(context).scaledTouchSlop.
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
 
+    // DONE Step: 12.0 add a variable called frame that holds a Rect object.
+    private lateinit var frame: Rect
 
     // DONE Step: 4.3 override the onSizeChanged() method.
     //  This callback method is called by the Android system with the changed screen dimensions,
@@ -92,6 +91,12 @@ class MyCanvasView(context: Context) : View(context) {
         extraCanvas = Canvas(extraBitmap)
         // DONE Step: 4.6 call drawColor to specify the background color in which to fill extraCanvas
         extraCanvas.drawColor(backgroundColor)
+
+        // DONE Step: 12.1 create the Rect that will be used for the frame,
+        //  using the new dimensions and the inset
+        val inset = 40
+        frame = Rect(inset, inset, width - inset, height - inset)
+
     }
 
     //  DONE Step: 5.0 Override onDraw() and draw the contents of the cached extraBitmap on the canvas associated with the view.
@@ -103,6 +108,7 @@ class MyCanvasView(context: Context) : View(context) {
         //  Note: The 2D coordinate system used for drawing on a Canvas is in pixels,
         //  and the origin (0,0) is at the top left corner of the Canvas.
         canvas?.drawBitmap(extraBitmap, 0f, 0f, null)
+        canvas?.drawRect(frame, paint)
     }
 
     //  DONE Step: 8.0 override the onTouchEvent() method

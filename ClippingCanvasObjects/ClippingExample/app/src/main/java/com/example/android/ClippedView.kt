@@ -47,5 +47,16 @@ class ClippedView @JvmOverloads constructor(
     // DONE: Step 4.3 Add an offset and a text size for text that is drawn inside the rectangle
     private val textOffset = resources.getDimension(R.dimen.textOffset)
     private val textSize = resources.getDimension(R.dimen.textSize)
+    // DONE: Step 5.0 Set up the coordinates for two columns
+    private val columnOne = rectInset
+    private val columnTwo = columnOne + rectInset + clipRectRight
+    // DONE: Step 5.1 Add the coordinates for each row,
+    //  including the final row for the transformed text
+    private val rowOne = rectInset
+    private val rowTwo = rowOne + rectInset + clipRectBottom
+    private val rowThree = rowTwo + rectInset + clipRectBottom
+    private val rowFour = rowThree + rectInset + clipRectBottom
+    private val textRow = rowFour + (1.5f * clipRectBottom)
+
 
 }

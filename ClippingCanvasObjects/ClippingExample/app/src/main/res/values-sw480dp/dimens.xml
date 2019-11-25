@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--DONE: Step 2.2 Define a new dimensions file for bigger screens
+        In the New Resource File dialog, call the file dimens
+        In Available qualifiers, select Smallest Screen Width as qualifiers
+        Enter 480 into the Smallest screen width box
+    -->
+<resources>
+    <!--DONE: Step 2.3 add the values with the given code-->
+    <dimen name="clipRectRight">120dp</dimen>
+    <dimen name="clipRectBottom">120dp</dimen>
+
+    <dimen name="rectInset">10dp</dimen>
+    <dimen name="smallRectOffset">50dp</dimen>
+
+    <dimen name="circleRadius">40dp</dimen>
+    <dimen name="textOffset">25dp</dimen>
+    <dimen name="strokeWidth">6dp</dimen>
+</resources>

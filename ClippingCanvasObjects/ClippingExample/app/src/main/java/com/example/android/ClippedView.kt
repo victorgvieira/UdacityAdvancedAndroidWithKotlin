@@ -31,4 +31,21 @@ class ClippedView @JvmOverloads constructor(
     //  to store locally the path of what has been drawn. Import android.graphics.Path.
     private val path = Path()
 
+    // DONE: Step 4.0 add variables for dimensions for a clipping rectangle
+    //  around the whole set of shapes
+    private val clipRectRight = resources.getDimension(R.dimen.clipRectRight)
+    private val clipRectBottom = resources.getDimension(R.dimen.clipRectBottom)
+    private val clipRectTop = resources.getDimension(R.dimen.clipRectTop)
+    private val clipRectLeft = resources.getDimension(R.dimen.clipRectLeft)
+
+    // DONE: Step 4.1 Add variables for the inset of a rectangle and the offset of a small rectangle.
+    private val rectInset = resources.getDimension(R.dimen.rectInset)
+    private val smallRectOffset = resources.getDimension(R.dimen.smallRectOffset)
+    // DONE: Step 4.2 Add a variable for the radius of a circle.
+    //  This is the circle that is drawn inside the rectangle.
+    private val circleRadius = resources.getDimension(R.dimen.circleRadius)
+    // DONE: Step 4.3 Add an offset and a text size for text that is drawn inside the rectangle
+    private val textOffset = resources.getDimension(R.dimen.textOffset)
+    private val textSize = resources.getDimension(R.dimen.textSize)
+
 }

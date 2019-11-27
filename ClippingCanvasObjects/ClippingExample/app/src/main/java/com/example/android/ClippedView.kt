@@ -88,6 +88,36 @@ class ClippedView @JvmOverloads constructor(
     }
 
     private fun drawCombinedClippingExample(canvas: Canvas?) {
+        canvas?.apply {
+            // DONE: Step 12.0
+            //  a. Save the canvas.
+            //  b. Translate to the third row and first column position.
+            save()
+            translate(columnOne, rowThree)
+            // DONE: Step 12.1 Clears any lines and curves from the path
+            path.rewind()
+            // DONE: Step 12.2 Create the circle path
+            path.addCircle(
+                clipRectLeft + rectInset + circleRadius,
+                clipRectTop + circleRadius + rectInset,
+                circleRadius,
+                Path.Direction.CCW
+            )
+            // DONE: Step 12.2 Create the rectangle path
+            path.addRect(
+                clipRectRight / 2 - circleRadius,
+                clipRectTop + circleRadius + rectInset,
+                clipRectRight / 2 + circleRadius,
+                clipRectBottom - rectInset, Path.Direction.CCW
+            )
+            // DONE: Step 12.3 Clip the combined path from the canvas
+            clipPath(path)
+            // DONE: Step 12.4
+            //  c. Draw by calling drawClippedRectangle().
+            //  d. Then restore the canvas to its previous state.
+            drawClippedRectangle(canvas)
+            restore()
+        }
     }
 
     private fun drawIntersectionClippingExample(canvas: Canvas?) {
@@ -117,7 +147,7 @@ class ClippedView @JvmOverloads constructor(
                     Region.Op.INTERSECT
                 )
             } else {
-                canvas.clipRect(
+                clipRect(
                     clipRectLeft + smallRectOffset,
                     clipRectTop + smallRectOffset,
                     clipRectRight,
@@ -221,7 +251,7 @@ class ClippedView @JvmOverloads constructor(
             save()
             translate(columnOne, rowOne)
             drawClippedRectangle(canvas)
-            canvas.restore()
+            restore()
         }
     }
 

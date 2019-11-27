@@ -94,6 +94,39 @@ class ClippedView @JvmOverloads constructor(
     }
 
     private fun drawCircularClippingExample(canvas: Canvas?) {
+        canvas?.apply {
+            // DONE: Step 10.0
+            //  a. Save the canvas.
+            //  b. Translate to the second row and first column position.
+            save()
+            translate(columnOne, rowTwo)
+            // DONE: Step 10.1 Clears any lines and curves from the path
+            //  but unlike reset(), keeps the internal data structure for faster reuse
+            path.rewind()
+            // DONE: Step 10.2 Create the circle path
+            path.addCircle(
+                circleRadius,
+                clipRectBottom - circleRadius,
+                circleRadius,
+                Path.Direction.CCW
+            )
+            // DONE: Step 10.3 Remove the circle from draw
+            // The method clipPath(path, Region.Op.DIFFERENCE) was deprecated in
+            // API level 26. The recommended alternative method is
+            // clipOutPath(Path), which is currently available in
+            // API level 26 and higher.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                clipPath(path, Region.Op.DIFFERENCE)
+            } else {
+                clipOutPath(path)
+            }
+            // DONE: Step 10.4
+            //  c. Draw by calling drawClippedRectangle().
+            //  d. Then restore the canvas to its previous state.
+            drawClippedRectangle(canvas)
+            restore()
+        }
+
     }
 
     private fun drawDifferenceClippingExample(canvas: Canvas?) {

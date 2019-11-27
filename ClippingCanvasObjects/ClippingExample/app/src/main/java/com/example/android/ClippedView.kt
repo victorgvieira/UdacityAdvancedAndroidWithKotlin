@@ -2,6 +2,7 @@ package com.example.android
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
@@ -62,6 +63,7 @@ class ClippedView @JvmOverloads constructor(
     // DONE: Step 6.0 Override onDraw() and call a function for each shape you are drawing.
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        drawClippedRectangle(canvas)
         drawBackAndUnclippedRectangle(canvas)
         drawDifferenceClippingExample(canvas)
         drawCircularClippingExample(canvas)
@@ -77,39 +79,62 @@ class ClippedView @JvmOverloads constructor(
     // DONE: Step 6.1 Create stubs for each of the drawing functions
     //  so that the code will continue to compile.
     private fun drawTranslatedTextExample(canvas: Canvas?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun drawSkewedTextExample(canvas: Canvas?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun drawOutsideClippingExample(canvas: Canvas?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun drawRoundedRectangleClippingExample(canvas: Canvas?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun drawCombinedClippingExample(canvas: Canvas?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun drawIntersectionClippingExample(canvas: Canvas?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun drawCircularClippingExample(canvas: Canvas?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun drawDifferenceClippingExample(canvas: Canvas?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun drawBackAndUnclippedRectangle(canvas: Canvas?) {
 
+    }
+
+    // DONE: Step 7.0 Create a drawClippedRectangle() method that takes an argument canvas of type Canvas
+    private fun drawClippedRectangle(canvas: Canvas?) {
+
+        canvas?.apply {
+            // NOTE STEP 7.* Try to comment the clipRect method and/or change the value of draw's
+            // methods to notice how clipping constraint the boundary draw of whole canvas
+
+            // DONE: Step 7.1 set the boundaries of the clipping rectangle for the whole shape.
+            //  Apply a clipping rectangle that constrains to drawing only the square
+            clipRect(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom)
+            // DONE: Step 7.2 Add code to fill the canvas with white color.
+            //  Only the region inside the clipping rectangle will be filled!
+            drawColor(Color.WHITE)
+            // DONE: Step 7.2 Change the color to red and draw a diagonal line inside the clipping rectangle.
+            paint.color = Color.RED
+            drawLine(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom, paint)
+            // DONE: Step 7.3 Set the color to green and draw a circle inside the clipping rectangle.
+            paint.color = Color.GREEN
+            drawCircle(circleRadius, clipRectBottom - circleRadius, circleRadius, paint)
+            // DONE: Step 7.4 Set the color to blue and using Canvas.drawText()
+            //  draw the text aligned with the right edge of the clipping rectangle
+            paint.color = Color.BLUE
+            paint.textSize = textSize
+            // Note: The Paint.Align property specifies which side of the text to align to the origin
+            // (not which side of the origin the text goes, or where in the region it is aligned!)
+            // . Aligning the right side of the text to the origin places it on the left of the origin.
+            paint.textAlign = Paint.Align.RIGHT
+            drawText(context.getString(R.string.clipping), clipRectRight, textOffset, paint)
+        }
     }
 
 

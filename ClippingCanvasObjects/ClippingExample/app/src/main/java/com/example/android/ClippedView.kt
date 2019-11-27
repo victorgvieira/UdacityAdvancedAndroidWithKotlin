@@ -63,7 +63,6 @@ class ClippedView @JvmOverloads constructor(
     // DONE: Step 6.0 Override onDraw() and call a function for each shape you are drawing.
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        drawClippedRectangle(canvas)
         drawBackAndUnclippedRectangle(canvas)
         drawDifferenceClippingExample(canvas)
         drawCircularClippingExample(canvas)
@@ -103,7 +102,18 @@ class ClippedView @JvmOverloads constructor(
     }
 
     private fun drawBackAndUnclippedRectangle(canvas: Canvas?) {
-
+        canvas?.apply {
+            // DONE: Step 8.0 Implement the drawBackAndUnclippedRectangle() method.
+            //  a. Save the canvas.
+            //  b. Translate to the first row and column position.
+            //  c. Draw by calling drawClippedRectangle().
+            //  d. Then restore the canvas to its previous state.
+            drawColor(Color.GRAY)
+            save()
+            translate(columnOne, rowOne)
+            drawClippedRectangle(canvas)
+            canvas.restore()
+        }
     }
 
     // DONE: Step 7.0 Create a drawClippedRectangle() method that takes an argument canvas of type Canvas

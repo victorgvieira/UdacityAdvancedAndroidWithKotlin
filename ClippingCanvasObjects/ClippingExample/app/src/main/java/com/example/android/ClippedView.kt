@@ -91,6 +91,45 @@ class ClippedView @JvmOverloads constructor(
     }
 
     private fun drawIntersectionClippingExample(canvas: Canvas?) {
+        canvas?.apply {
+            // DONE: Step 11.0
+            //  a. Save the canvas.
+            //  b. Translate to the second row and column position.
+            save()
+            translate(columnTwo, rowTwo)
+            // DONE: Step 11.1 Clip the first frame.
+            clipRect(
+                clipRectLeft, clipRectTop,
+                clipRectRight - smallRectOffset,
+                clipRectBottom - smallRectOffset
+            )
+            // DONE: Step 11.2 Clip the second frame resulting on the same frames in commom.
+            // The method clipRect(float, float, float, float, Region.Op
+            // .INTERSECT) was deprecated in API level 26. The recommended
+            // alternative method is clipRect(float, float, float, float), which
+            // is currently available in API level 26 and higher.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                clipRect(
+                    clipRectLeft + smallRectOffset,
+                    clipRectTop + smallRectOffset,
+                    clipRectRight,
+                    clipRectBottom,
+                    Region.Op.INTERSECT
+                )
+            } else {
+                canvas.clipRect(
+                    clipRectLeft + smallRectOffset,
+                    clipRectTop + smallRectOffset,
+                    clipRectRight,
+                    clipRectBottom
+                )
+            }
+            // DONE: Step 11.3
+            //  c. Draw by calling drawClippedRectangle().
+            //  d. Then restore the canvas to its previous state.
+            drawClippedRectangle(canvas)
+            restore()
+        }
     }
 
     private fun drawCircularClippingExample(canvas: Canvas?) {

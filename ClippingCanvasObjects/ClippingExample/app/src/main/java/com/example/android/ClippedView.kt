@@ -58,6 +58,11 @@ class ClippedView @JvmOverloads constructor(
     private val rowFour = rowThree + rectInset + clipRectBottom
     private val textRow = rowFour + (1.5f * clipRectBottom)
 
+    // DONE: Step 13.0 create and initialize a rectangle variable.
+    //  RectF is a class that holds rectangle coordinates in floating point
+    private var rectF =
+        RectF(rectInset, rectInset, clipRectRight - rectInset, clipRectBottom - rectInset)
+
     // DONE: Step 6.0 Override onDraw() and call a function for each shape you are drawing.
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -85,6 +90,29 @@ class ClippedView @JvmOverloads constructor(
     }
 
     private fun drawRoundedRectangleClippingExample(canvas: Canvas?) {
+        canvas?.apply {
+            // DONE: Step 13.1
+            //  a. Save the canvas.
+            //  b. Translate to the third row and second column position.
+            save()
+            translate(columnTwo, rowThree)
+            // DONE: Step 13.2 Clears any lines and curves from the path
+            path.rewind()
+            // DONE: Step 13.3 the rounded rect
+            path.addRoundRect(
+                rectF,
+                clipRectRight / 4,
+                clipRectRight / 4,
+                Path.Direction.CCW
+            )
+            // DONE: Step 13.4 Clip the combined path from the canvas
+            clipPath(path)
+            // DONE: Step 13.5
+            //  c. Draw by calling drawClippedRectangle().
+            //  d. Then restore the canvas to its previous state.
+            drawClippedRectangle(canvas)
+            restore()
+        }
     }
 
     private fun drawCombinedClippingExample(canvas: Canvas?) {

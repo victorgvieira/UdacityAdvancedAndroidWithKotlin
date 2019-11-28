@@ -87,6 +87,25 @@ class ClippedView @JvmOverloads constructor(
     }
 
     private fun drawOutsideClippingExample(canvas: Canvas?) {
+        canvas?.apply {
+            // DONE: Step 14.0
+            //  a. Save the canvas.
+            //  b. Translate to the fourth row and first column position.
+            save()
+            translate(columnOne, rowFour)
+            // DONE: Step 14.1 clip the double rectInset rectangle
+            clipRect(
+                2 * rectInset,
+                2 * rectInset,
+                clipRectRight - 2 * rectInset,
+                clipRectBottom - 2 * rectInset
+            )
+            // DONE: Step 14.2
+            //  c. Draw by calling drawClippedRectangle().
+            //  d. Then restore the canvas to its previous state.
+            drawClippedRectangle(canvas)
+            restore()
+        }
     }
 
     private fun drawRoundedRectangleClippingExample(canvas: Canvas?) {

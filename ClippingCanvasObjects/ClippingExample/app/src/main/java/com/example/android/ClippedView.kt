@@ -63,6 +63,9 @@ class ClippedView @JvmOverloads constructor(
     private var rectF =
         RectF(rectInset, rectInset, clipRectRight - rectInset, clipRectBottom - rectInset)
 
+    // DONE: Step 17.0 create a variable for the y coordinates of an additional row
+    private val rejectRow = rowFour + rectInset + 2 * clipRectBottom
+
     // DONE: Step 6.0 Override onDraw() and call a function for each shape you are drawing.
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -73,9 +76,72 @@ class ClippedView @JvmOverloads constructor(
         drawCombinedClippingExample(canvas)
         drawRoundedRectangleClippingExample(canvas)
         drawOutsideClippingExample(canvas)
-        drawSkewedTextExample(canvas)
         drawTranslatedTextExample(canvas)
-        // drawQuickRejectExamples(canvas)
+        drawSkewedTextExample(canvas)
+        drawQuickRejectExamples(canvas)
+        drawQuickRejectNotInExamples(canvas)
+    }
+
+    // DONE: Step 17.1 drawQuickRejectExample() function, and uncomment its invocation in onDraw()
+    private fun drawQuickRejectExamples(canvas: Canvas?) {
+        canvas?.apply {
+            // DONE: Step 17.2
+            //  a. Save the canvas.
+            //  b. Translate to the reject row and first column position.
+            save()
+            translate(columnOne, rejectRow)
+            // DONE: Step 17.3 the in rectangle
+            val inClipRectangle = RectF(
+                clipRectRight / 2,
+                clipRectBottom / 2,
+                clipRectRight * 2,
+                clipRectBottom * 2
+            )
+            clipRect(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom)
+            // DONE: Step 17.4 call quickReject() with a rectangle inClipRectangle
+            //  So quickReject() returns false, clipRect is filled with BLACK,
+            //  and the inClipRectangle rectangle is drawn
+            if (quickReject(inClipRectangle, Canvas.EdgeType.AA)) {
+                drawColor(Color.WHITE)
+            } else {
+                drawColor(Color.BLACK)
+                drawRect(inClipRectangle, paint)
+            }
+            // DONE: Step 17.5 Then restore the canvas to its previous state.
+            restore()
+        }
+    }
+
+    // DONE: Step 17.6 drawQuickRejectExample() function, and uncomment its invocation in onDraw()
+    private fun drawQuickRejectNotInExamples(canvas: Canvas?) {
+        canvas?.apply {
+            // DONE: Step 17.7
+            //  a. Save the canvas.
+            //  b. Translate to the reject row and second column position.
+            save()
+            translate(columnTwo, rejectRow)
+            // DONE: Step 17.8 the not in rectangle
+            val notInclipRectangle = RectF(
+                RectF(
+                    clipRectRight + 1,
+                    clipRectBottom + 1,
+                    clipRectRight * 2,
+                    clipRectBottom * 2
+                )
+            )
+            clipRect(clipRectLeft, clipRectTop, clipRectRight, clipRectBottom)
+            // DONE: Step 17.9 call quickReject() with a rectangle notInClipRectangle
+            //  So quickReject() now returns true, and clipRect is filled with WHITE,
+            //  and notInClipRectangle is not drawn
+            if (quickReject(notInclipRectangle, Canvas.EdgeType.AA)) {
+                drawColor(Color.WHITE)
+            } else {
+                drawColor(Color.BLACK)
+                drawRect(notInclipRectangle, paint)
+            }
+            // DONE: Step 17.10 Then restore the canvas to its previous state.
+            restore()
+        }
     }
 
     // DONE: Step 6.1 Create stubs for each of the drawing functions

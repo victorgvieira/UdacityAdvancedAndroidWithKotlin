@@ -81,6 +81,22 @@ class ClippedView @JvmOverloads constructor(
     // DONE: Step 6.1 Create stubs for each of the drawing functions
     //  so that the code will continue to compile.
     private fun drawTranslatedTextExample(canvas: Canvas?) {
+        canvas?.apply {
+            // DONE: Step 15.0
+            //  a. Save the canvas.
+            //  b. Translate to the text row and second column position.
+            save()
+            translate(columnTwo, textRow)
+            // DONE: Step 15.1 change paint
+            //  . Set color GREEN
+            //  . Align the RIGHT side of the text with the origin
+            paint.color = Color.GREEN
+            paint.textAlign = Paint.Align.LEFT
+            // DONE: Step 15.2 draw the text
+            drawText(context.getString(R.string.translated), clipRectLeft, clipRectTop, paint)
+            // DONE: Step 15.3 Then restore the canvas to its previous state.
+            restore()
+        }
     }
 
     private fun drawSkewedTextExample(canvas: Canvas?) {

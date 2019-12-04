@@ -16,8 +16,12 @@
 
 package com.google.samples.propertyanimation
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 
@@ -70,6 +74,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun rotater() {
+        // DONE Step 1.0: create an animation using ObjectAnimator.ofFloat
+        //  that rotates the ImageView containing the star from a value of -360 to 0.
+        //  This means that the view, and thus the star inside it, will rotate in a full circle (360 degrees) around its center.
+        val starAnimator = ObjectAnimator.ofFloat(star, View.ROTATION, -360f, 0f)
+        // DONE Step 1.1: Change the duration property of the animator to 1000 milliseconds
+        starAnimator.duration = 1000
+        // DONE Step 1.2 add a new AnimatorListenerAdapter object to the animator
+        //  and override the onAnimationStart() and onAnimationEnd()
+        starAnimator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                // DONE Step 1.3 disable rotate button when animation start
+                rotateButton.isEnabled = false
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                // DONE Step 1.3 enable rotate button when animation end
+                rotateButton.isEnabled = true
+            }
+        })
+        //DONE Step 1.4: Start the animation
+        starAnimator.start()
     }
 
     private fun translater() {

@@ -89,11 +89,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onAnimationEnd(animation: Animator?) {
-                // DONE Step 1.3 enable rotate button when animation end
+                // DONE Step 1.4 enable rotate button when animation end
                 rotateButton.isEnabled = true
             }
         })
-        //DONE Step 1.4: Start the animation
+        //DONE Step 1.5: Start the animation
         starAnimator.start()
     }
 

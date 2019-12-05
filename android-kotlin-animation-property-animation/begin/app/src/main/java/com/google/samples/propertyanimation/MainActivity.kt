@@ -19,6 +19,7 @@ package com.google.samples.propertyanimation
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -82,22 +83,45 @@ class MainActivity : AppCompatActivity() {
         starAnimator.duration = 1000
         // DONE Step 1.2 add a new AnimatorListenerAdapter object to the animator
         //  and override the onAnimationStart() and onAnimationEnd()
-        starAnimator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationStart(animation: Animator?) {
-                // DONE Step 1.3 disable rotate button when animation start
-                rotateButton.isEnabled = false
-            }
-
-            override fun onAnimationEnd(animation: Animator?) {
-                // DONE Step 1.4 enable rotate button when animation end
-                rotateButton.isEnabled = true
-            }
-        })
+        // NOT USED in Step 2.3 and thereafter
+//        starAnimator.addListener(object : AnimatorListenerAdapter() {
+//            override fun onAnimationStart(animation: Animator?) {
+//                // DONE Step 1.3 disable rotate button when animation start
+//                rotateButton.isEnabled = false
+//            }
+//
+//            override fun onAnimationEnd(animation: Animator?) {
+//                // DONE Step 1.4 enable rotate button when animation end
+//                rotateButton.isEnabled = true
+//            }
+//        })
+        //DONE Step 2.5 call disableViewDuringAnimation method in rotater()
+        // to disable their buttons during their respective animations
+        //NOT USED in Step 2.6 and thereafter
+//        disableViewDuringAnimation(rotateButton, starAnimator)
+        //DONE Step 2.8 Modify the code in rotater() to call the extension function
+        starAnimator.disableViewDuringAnimation(rotateButton)
         //DONE Step 1.5: Start the animation
         starAnimator.start()
     }
 
     private fun translater() {
+        // DONE Step 2.0: create an animation using ObjectAnimator.ofFloat
+        //  that moves the star to the right by 200 pixels.
+        val animator = ObjectAnimator.ofFloat(star, View.TRANSLATION_X, 200f)
+        animator.apply {
+            // DONE Step 2.1: Set the repeatCount property on the animation to 1
+            repeatCount = 1
+            // DONE Step 2.2: Set the repeatMode as REVERSE for repeating again from the same values
+            repeatMode = ObjectAnimator.REVERSE
+        }
+        //DONE Step 2.4 call disableViewDuringAnimation method in translater()
+        // to disable their buttons during their respective animations
+        //NOT USED in Step 2.6 and thereafter
+//        disableViewDuringAnimation(translateButton, animator)
+        //DONE Step 2.7 Modify the code in translater() to call the extension function
+        animator.disableViewDuringAnimation(translateButton)
+        animator.start()
     }
 
     private fun scaler() {
@@ -110,6 +134,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun shower() {
+    }
+
+
+    //DONE Step 2.3: Create a function called disableViewDuringAnimation(),
+    // which takes a View and an ObjectAnimator,
+    // and use the code you already wrote earlier in rotater() to create the body of this function
+    fun disableViewDuringAnimation(view: View, animator: ObjectAnimator) {
+        animator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                view.isEnabled = false
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                view.isEnabled = true
+            }
+        })
+
+    }
+
+    //DONE Step 2.6 create the method disableViewDuringAnimation as an extension function of ObjectAnimator
+    private fun ObjectAnimator.disableViewDuringAnimation(view: View) {
+        addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationStart(animation: Animator?) {
+                view.isEnabled = false
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+                view.isEnabled = true
+            }
+        })
     }
 
 }

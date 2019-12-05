@@ -16,10 +16,7 @@
 
 package com.google.samples.propertyanimation
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
+import android.animation.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -125,6 +122,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun scaler() {
+        // Note: There is no single property that scales in both the x and y dimensions,
+        // so animations that scale in both x and y need to animate both of these separate properties in parallel.
+        // DONE Step 3.0: create two a PropertyValuesHolder for SCALE_X
+        val scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 4f)
+        // DONE Step 3.1: create two a PropertyValuesHolder for SCALE_Y
+        val scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, 4f)
+        // DONE Step 3.2: create an ObjectAnimator object, using the scaleX and scaleY objects
+        val animator = ObjectAnimator.ofPropertyValuesHolder(star, scaleX, scaleY)
+        animator.apply {
+            // DONE Step 3.3: Set the repeatCount property on the animation to 1
+            repeatCount = 1
+            // DONE Step 3.4: Set the repeatMode as REVERSE for repeating again from the same values
+            repeatMode = ObjectAnimator.REVERSE
+            // DONE Step 3.5: call the disableViewDurationAnimation() extension function
+            //  to disable scaleButton during the animation
+            disableViewDuringAnimation(scaleButton)
+        }
+        // DONE Step 3.6 Starts
+        animator.start()
     }
 
     private fun fader() {

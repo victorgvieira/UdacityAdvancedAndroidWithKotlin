@@ -17,6 +17,7 @@
 package com.google.samples.propertyanimation
 
 import android.animation.*
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -160,6 +161,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun colorizer() {
+        // This time, the property isn’t an android.util.Property object,
+        // but is instead a property exposed via a setter, View.setBackgroundColor(int).
+        // Since you cannot refer to an android.util.Property object directly,
+        // like you did before with ALPHA, etc.,
+        // you will use the approach of passing in the name of the property as a String
+        // DONE Step 5.0: create an animation using ObjectAnimator.onInt
+        //  passing the property name as "backgroundColor".
+        //NOT USED in Step 5.0.1 and thereafter
+        //Animating between two integer values does not necessarily yield the same result
+        // as animating between the colors that those two integers represent
+//        val animator = ObjectAnimator.ofInt(star.parent, "backgroundColor", Color.BLACK, Color.RED)
+        // DONE Step 5.0.1: create an animation using ObjectAnimator.ofArgb
+        //  passing the property name as "backgroundColor".
+        // We need an animator that knows how to interpret (and animate between) color values,
+        // rather than simply the integers that represent those color
+        val animator = ObjectAnimator.ofArgb(star.parent, "backgroundColor", Color.BLACK, Color.RED)
+        animator.apply {
+            duration = 500
+            // DONE Step 5.1: Set the repeatCount property on the animation to 1
+            repeatCount = 1
+            // DONE Step 5.2: Set the repeatMode as REVERSE for repeating again from the same values
+            repeatMode = ObjectAnimator.REVERSE
+            //DONE Step 5.3 call disableViewDuringAnimation method
+            disableViewDuringAnimation(colorizeButton)
+        }
+        // DONE Step 5.4 Starts
+        animator.start()
     }
 
     private fun shower() {

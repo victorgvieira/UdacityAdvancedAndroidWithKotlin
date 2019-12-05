@@ -144,6 +144,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fader() {
+        // DONE Step 4.0: create an animation using ObjectAnimator.ofFloat
+        //  that change the star opacity to the 0.
+        val animator = ObjectAnimator.ofFloat(star, View.ALPHA, 0f)
+        animator.apply {
+            // DONE Step 4.1: Set the repeatCount property on the animation to 1
+            repeatCount = 1
+            // DONE Step 4.2: Set the repeatMode as REVERSE for repeating again from the same values
+            repeatMode = ObjectAnimator.REVERSE
+            //DONE Step 4.3 call disableViewDuringAnimation method
+            disableViewDuringAnimation(fadeButton)
+        }
+        // DONE Step 4.4 Starts
+        animator.start()
     }
 
     private fun colorizer() {

@@ -12,7 +12,20 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
+    //  DONE Step 1.0: Rename mMap to map
+    private lateinit var map: GoogleMap
+
+    // DONE Step 1.1: Open the debug version of the google_maps_api.xml file.
+    //  The file includes a comment with a long URL. The URL's parameters include specific information about your app.
+
+    //  DONE Step 1.2 Copy and paste the URL into a browser.
+
+    //  DONE Step 1.3 Follow the prompts to create a project in the Google API Console.
+    //   Because of the parameters in the provided URL, the API Console knows to automatically enable the Google Maps Android API.
+
+    //  DONE Step 1.4 Create an API key and click Restrict Key to restrict the key's use to Android apps. The generated API key should start with AIza.
+
+    //  DONE Step 1.5 In the google_maps_api.xml file, paste the key into the google_maps_key string where it says YOUR_KEY_HERE.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,11 +46,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        map = googleMap
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 }

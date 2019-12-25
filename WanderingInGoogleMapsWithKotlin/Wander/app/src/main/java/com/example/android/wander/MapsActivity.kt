@@ -7,11 +7,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.*
 
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
 import java.lang.Exception
 import java.util.*
 
@@ -79,6 +76,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // DONE Step 3.4 Move the camera calling the moveCamera() function on the GoogleMap object
         //  and pass homeLatLng and zoomLevel in a CameraUpdate object using CameraUpdateFactory.newLatLngZoom()
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoomLevel))
+
+        // DONE Step 8.1 create a GroundOverlayOptions object. Assign the object to a variable called homeOverlay
+        val homeOverlay = GroundOverlayOptions()
+        // DONE Step 8.2 Create a float for the width in meters of the desired overlay
+        val overlaySize = 100f
+        // DONE Step 8.3 Use the BitmapDescriptorFactory.fromResource() method to create a BitmapDescriptor object from the downloaded image.
+        //  Pass the object into the image() method of the GroundOverlayOptions object
+        val androidOverlay =
+            homeOverlay
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.android))
+                // DONE Step 8.4 Set the position property for the GroundOverlayOptions object by calling the position() method.
+                //  Pass in the home LatLng object and the size value.
+                .position(homeLatLng, overlaySize)
+        // DONE Step 8.5 Call addGroundOverlay() on the GoogleMap object. Pass in your GroundOverlayOptions object
+        map.addGroundOverlay(androidOverlay)
+
         // DONE Step 3.5 Create a marker that point to your home.
         val homeMarker = MarkerOptions().position(homeLatLng)
         // DONE Step 3.6 Add the marker to the map
@@ -200,4 +213,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }
     }
+
+    //DONE Step 8.0
+    // - Open the URL https://github.com/google-developer-training/android-advanced/blob/master/Wander/app/src/main/res/drawable/android.png in your browser
+    // - Download this Android image.
+    // - Save it in your res/drawable folder. (Make sure the file name is android.png)
 }

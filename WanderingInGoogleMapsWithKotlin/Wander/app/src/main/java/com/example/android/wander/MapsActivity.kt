@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -145,6 +146,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     // DONE Step 4.5 Set the title of the marker to “Dropped Pin” and the snippet to the snippet you just created
                     .title(getString(R.string.dropped_pin))
                     .snippet(snippet)
+                    // DONE Step 7.0 call the icon() method passing a BitmapDescriptorFactory to use the default marker but change the color to blue
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
             )
         }
     }

@@ -54,10 +54,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
+        // DONE Step 3.0: remove the code that places the marker in Sydney and moves the camera
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+//        val sydney = LatLng(-34.0, 151.0)
+//        map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+//        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        // DONE Step 3.1: find the coordinates of your home
+        // DONE Step 3.2: Create a value for the latitude and a value for the longitude and input their float values
+        val latitude = -7.234729
+        val longitude = -39.412622
+        // DONE Step 3.3 Create a new LatLng object using the values you just created
+        // NOTE Zoom level detail 1: World; 5: Landmass/continent; 10: City; 15: Streets; 20: Buildings
+        val homeLatLng = LatLng(latitude, longitude)
+        // DONE Step 3.3 Create a val for how zoomed in you want to be on the map
+        val zoomLevel = 15f
+        // DONE Step 3.4 Move the camera calling the moveCamera() function on the GoogleMap object
+        //  and pass homeLatLng and zoomLevel in a CameraUpdate object using CameraUpdateFactory.newLatLngZoom()
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoomLevel))
+        // DONE Step 3.5 Create a marker that point to your home.
+        val homeMarker = MarkerOptions().position(homeLatLng)
+        // DONE Step 3.6 Add the marker to the map
+        map.addMarker(homeMarker)
+
     }
 
     // DONE Step 2.3: override the onCreateOptionsMenu() method

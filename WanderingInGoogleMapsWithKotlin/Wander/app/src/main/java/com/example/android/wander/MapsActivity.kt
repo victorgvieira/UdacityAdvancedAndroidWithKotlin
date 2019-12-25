@@ -80,6 +80,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // DONE Step 4.3 call setMapLongClick. Pass in map
         setMapLongClick(map)
 
+        // DONE Step 5.5 call setPoiClick. Pass in map.
+        setPoiClick(map)
+
     }
 
     // DONE Step 2.3: override the onCreateOptionsMenu() method
@@ -115,7 +118,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // DONE Step 4.0 Create a method called setMapLongClick() that takes a GoogleMap as an argument.
-    fun setMapLongClick(map: GoogleMap) {
+    private fun setMapLongClick(map: GoogleMap) {
         // DONE Step 4.1 Attach a long click listener to the map object.
         map.setOnMapLongClickListener { latLng ->
             // DONE Step 4.4 create a snippet (additional text that is displayed below the title)
@@ -135,6 +138,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .title(getString(R.string.dropped_pin))
                     .snippet(snippet)
             )
+        }
+    }
+
+    // DONE Step 5.0 Create a method called setPoiClick() that takes a GoogleMap as an argument.
+    private fun setPoiClick(map: GoogleMap) {
+        // DONE Step 5.1 set an OnPoiClickListener on the passed-in GoogleMap
+        map.setOnPoiClickListener { poi ->
+            // DONE Step 5.2 create a variable called poiMarker.
+            // DONE Step 5.3 place a marker at the POI location and set the title to the name of the POI.
+            val poiMarker = map.addMarker(
+                MarkerOptions()
+                    .position(poi.latLng)
+                    .title(poi.name)
+            )
+            // DONE Step 5.4 call showInfoWindow() on poiMarker to immediately show the info window
+            poiMarker.showInfoWindow()
         }
     }
 

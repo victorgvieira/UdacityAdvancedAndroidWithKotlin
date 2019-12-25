@@ -1,5 +1,6 @@
 package com.example.android.wander
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,13 +9,18 @@ import android.view.MenuItem
 import com.google.android.gms.maps.*
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import java.lang.Exception
 import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     //  DONE Step 1.0: Rename mMap to map
     private lateinit var map: GoogleMap
+
+    // DONE Step 6.9 Create a TAG class variable. This will be used for logging purposes
+    private val TAG = MapsActivity::class.java.simpleName
 
     /* IMPORTANTNOTE run gradle -> app -> Tasks -> android -> signingReport to reveal your SHA1 value and use in the URL
       https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=YOUR_SHA1_HERE%3Bcom.example.android.wander*/
@@ -83,6 +89,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // DONE Step 5.5 call setPoiClick. Pass in map.
         setPoiClick(map)
 
+        // DONE Step 6.17 call the setMapStyle passing in your GoogleMap object.
+        setMapStyle(map)
     }
 
     // DONE Step 2.3: override the onCreateOptionsMenu() method
@@ -157,4 +165,36 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    // DONE Step 6.0 Navigate to https://mapstyle.withgoogle.com/ in your browser.
+    // DONE Step 6.1 Select Create a Style.
+    // DONE Step 6.2 Select the Retro theme.
+    // DONE Step 6.3 Click More Options at the bottom of the menu
+    // DONE Step 6.4 In the Feature type list, select Road > Fill. Change the color of the roads to any color you choose.
+    // DONE Step 6.5 Click Finish. Copy the JSON code from the resulting pop-up window.
+
+    // DONE Step 6.6 create a resource directory in the res directory and name it raw
+    // DONE Step 6.7 Create a file in res/raw called map_style.json
+    // DONE Step 6.8 Paste the JSON code into the new resource file
+
+    // DONE Step 6.10 create a setMapStyle() function that takes in a GoogleMap
+    private fun setMapStyle(map: GoogleMap) {
+        //DONE Step 6.11 create a try/catch block to handle possible errors
+        try {
+            // DONE Step 6.12 call setMapStyle() on the GoogleMap object.
+            // DONE Step 6.14 create a variable to store a boolean indicating the success of the styling.
+            val success = map.setMapStyle(
+                // DONE Step 6.13 Pass in a MapStyleOptions object, which loads the JSON file.
+                MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style)
+            )
+            // DONE Step 6.15 If the styling is unsuccessful, print a log that the parsing has failed
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+
+            // DONE Step 6.16 if the file can't be loaded, the method throws a Resources.NotFoundException.
+        } catch (e: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", e)
+
+        }
+    }
 }

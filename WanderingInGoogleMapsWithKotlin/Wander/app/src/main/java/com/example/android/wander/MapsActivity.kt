@@ -3,11 +3,10 @@ package com.example.android.wander
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import com.google.android.gms.maps.*
 
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
@@ -30,6 +29,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     //  DONE Step 1.4 Create an API key and click Restrict Key to restrict the key's use to Android apps. The generated API key should start with AIza.
 
     //  DONE Step 1.5 In the google_maps_api.xml file, paste the key into the google_maps_key string where it says YOUR_KEY_HERE.
+
+    //  DONE Step 2.0 create a new menu named file map_options
+    //  DONE Step 2.1 in map_options add the item options for each map type
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,5 +58,37 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val sydney = LatLng(-34.0, 151.0)
         map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }
+
+    // DONE Step 2.3: override the onCreateOptionsMenu() method
+    //  and inflate the menu from the map_options resource file
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        Since we are handling the menu creation, the super call is not needed
+//        return super.onCreateOptionsMenu(menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.map_options, menu)
+        return true
+    }
+
+    // DONE Step 2.4: override the onOptionsItemSelected() method
+    //  use the setMapType() method on the GoogleMap object, passing in one of the map-type constants
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.normal_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_NORMAL
+            true
+        }
+        R.id.hybrid_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_HYBRID
+            true
+        }
+        R.id.satellite_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_SATELLITE
+            true
+        }
+        R.id.terrain_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_TERRAIN
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 }

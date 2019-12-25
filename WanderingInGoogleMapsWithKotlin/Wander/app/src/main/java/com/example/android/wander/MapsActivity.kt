@@ -1,15 +1,18 @@
 package com.example.android.wander
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 
-import java.lang.Exception
 import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -19,6 +22,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // DONE Step 6.9 Create a TAG class variable. This will be used for logging purposes
     private val TAG = MapsActivity::class.java.simpleName
+
+    // DONE Step 9.1 create a REQUEST_LOCATION_PERMISSION variable
+    private val REQUEST_LOCATION_PERMISSION = 1
 
     /* IMPORTANTNOTE run gradle -> app -> Tasks -> android -> signingReport to reveal your SHA1 value and use in the URL
       https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=YOUR_SHA1_HERE%3Bcom.example.android.wander*/
@@ -105,6 +111,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // DONE Step 6.17 call the setMapStyle passing in your GoogleMap object.
         setMapStyle(map)
+
+        // DONE Step 9.7 enableMyLocation() to enable the location layer
+        enableMyLocation()
     }
 
     // DONE Step 2.3: override the onCreateOptionsMenu() method
@@ -214,8 +223,45 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    //DONE Step 8.0
-    // - Open the URL https://github.com/google-developer-training/android-advanced/blob/master/Wander/app/src/main/res/drawable/android.png in your browser
-    // - Download this Android image.
-    // - Save it in your res/drawable folder. (Make sure the file name is android.png)
+    // DONE Step 8.0
+    //  - Open the URL https://github.com/google-developer-training/android-advanced/blob/master/Wander/app/src/main/res/drawable/android.png in your browser
+    //  - Download this Android image.
+    //  - Save it in your res/drawable folder. (Make sure the file name is android.png)
+
+
+    // DONE Step 9.2 create a method called isPermissionGranted() that will check if the user has granted the permission.
+    private fun isPermissionGranted(): Boolean = ContextCompat.checkSelfPermission(
+        this, Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+
+    // DONE Step 9.3 create a method called enableMyLocation().
+    private fun enableMyLocation() {
+        // DONE Step 9.4 Check for the ACCESS_FINE_LOCATION permission
+        if (isPermissionGranted()) {
+            // DONE Step 9.5 If the permission is granted, enable the location layer
+            map.isMyLocationEnabled = true
+        } else {
+            // DONE Step 9.6 Otherwise, request the permission
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION
+            )
+        }
+    }
+
+    //DONE Step 9.5 Override the onRequestPermissionsResult() method.
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        // DONE Step 9.6 If the requestCode is equal to REQUEST_LOCATION_PERMISSION permission is granted
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            // DONE Step 9.7 and if the grantResults array is non empty with PackageManager.PERMISSION_GRANTED in its first slot, call enableMyLocation()
+            if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                enableMyLocation()
+            }
+        }
+    }
 }

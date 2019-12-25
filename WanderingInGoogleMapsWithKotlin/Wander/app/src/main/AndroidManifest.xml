@@ -7,6 +7,8 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
+    <!-- DONE Step 9.0 verify that the FINE_LOCATION permission is already present.
+            Android Studio inserted this permission when you selected the Google Maps template-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application

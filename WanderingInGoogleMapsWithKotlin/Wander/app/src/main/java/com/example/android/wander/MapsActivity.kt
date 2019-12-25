@@ -2,6 +2,7 @@ package com.example.android.wander
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -14,6 +15,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     //  DONE Step 1.0: Rename mMap to map
     private lateinit var map: GoogleMap
+
+    /* IMPORTANTNOTE run gradle -> app -> Tasks -> android -> signingReport to reveal your SHA1 value and use in the URL
+      https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=YOUR_SHA1_HERE%3Bcom.example.android.wander*/
 
     // DONE Step 1.1: Open the debug version of the google_maps_api.xml file.
     //  The file includes a comment with a long URL. The URL's parameters include specific information about your app.

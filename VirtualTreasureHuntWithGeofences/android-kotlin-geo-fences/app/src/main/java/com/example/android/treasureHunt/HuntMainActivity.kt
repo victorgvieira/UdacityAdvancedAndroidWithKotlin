@@ -164,9 +164,19 @@ class HuntMainActivity : AppCompatActivity() {
      */
     @TargetApi(29)
     private fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
-        // TODO: Step 3 replace this with code to check that the foreground and background
+        // DONE: Step 3 replace this with code to check that the foreground and background
         //  permissions were approved
-        return false
+        // We check the same permission added in AndroidManifest
+        val backgroundLocationApproved = ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        val foregroundLocationApproved =
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        return backgroundLocationApproved && foregroundLocationApproved
     }
 
     /*

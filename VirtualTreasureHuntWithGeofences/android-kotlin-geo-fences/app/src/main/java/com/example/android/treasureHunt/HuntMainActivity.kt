@@ -61,8 +61,9 @@ class HuntMainActivity : AppCompatActivity() {
     private lateinit var viewModel: GeofenceViewModel
 
     // DONE: Step 2 add in variable to check if device is running Q or later
+    //  NOTE: this step was copied from the solution code
     private var runningOnQOrLater =
-        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
+            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
     // TODO: Step 8 add in a pending intent
@@ -71,10 +72,10 @@ class HuntMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_hunt_main)
         viewModel = ViewModelProviders.of(
-            this, SavedStateViewModelFactory(
+                this, SavedStateViewModelFactory(
                 this.application,
                 this
-            )
+        )
         ).get(GeofenceViewModel::class.java)
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
@@ -121,9 +122,9 @@ class HuntMainActivity : AppCompatActivity() {
      * the background permission as well.
      */
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
     ) {
         // TODO: Step 5 add code to handle the result of the user's permission
     }
@@ -166,16 +167,17 @@ class HuntMainActivity : AppCompatActivity() {
     private fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
         // DONE: Step 3 replace this with code to check that the foreground and background
         //  permissions were approved
+        //  NOTE: this step was copied from the solution code
         // We check the same permission added in AndroidManifest
         val backgroundLocationApproved = ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                this,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
         val foregroundLocationApproved =
-            ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+                ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
         return backgroundLocationApproved && foregroundLocationApproved
     }
 
@@ -184,7 +186,23 @@ class HuntMainActivity : AppCompatActivity() {
      */
     @TargetApi(29)
     private fun requestForegroundAndBackgroundLocationPermissions() {
-        // TODO: Step 4 add code to request foreground and background permissions
+        // DONE: Step 4 add code to request foreground and background permissions
+        //  NOTE: this step was copied from the solution code
+        if (foregroundAndBackgroundLocationPermissionApproved()) {
+            return
+        }
+        var permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        val resultCode = when {
+            runningOnQOrLater -> {
+                // Add one more permission to array
+                permissions += Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                // return the request code for check two permissions
+                REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
+            }
+            else -> REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+        }
+        Log.d(TAG, "Request foreground only location permission")
+        ActivityCompat.requestPermissions(this, permissions, resultCode)
     }
 
     /*
@@ -207,7 +225,7 @@ class HuntMainActivity : AppCompatActivity() {
 
     companion object {
         internal const val ACTION_GEOFENCE_EVENT =
-            "HuntMainActivity.treasureHunt.action.ACTION_GEOFENCE_EVENT"
+                "HuntMainActivity.treasureHunt.action.ACTION_GEOFENCE_EVENT"
     }
 }
 

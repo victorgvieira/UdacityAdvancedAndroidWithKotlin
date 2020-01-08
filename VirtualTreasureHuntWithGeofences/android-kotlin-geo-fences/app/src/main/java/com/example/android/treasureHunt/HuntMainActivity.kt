@@ -16,17 +16,15 @@
 
 package com.example.android.treasureHunt
 
-import android.app.PendingIntent
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.Manifest
 import android.annotation.TargetApi
+import android.content.Intent
 import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -34,9 +32,7 @@ import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.treasureHunt.databinding.ActivityHuntMainBinding
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
-import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -63,7 +59,7 @@ class HuntMainActivity : AppCompatActivity() {
     // DONE: Step 2 add in variable to check if device is running Q or later
     //  NOTE: this step was copied from the solution code
     private var runningOnQOrLater =
-            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
+        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
     // TODO: Step 8 add in a pending intent
@@ -72,10 +68,10 @@ class HuntMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_hunt_main)
         viewModel = ViewModelProviders.of(
-                this, SavedStateViewModelFactory(
+            this, SavedStateViewModelFactory(
                 this.application,
                 this
-        )
+            )
         ).get(GeofenceViewModel::class.java)
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
@@ -97,8 +93,11 @@ class HuntMainActivity : AppCompatActivity() {
  */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // TODO: Step 7 add code to check that the user turned on their device location and ask
+        // DONE: Step 7 add code to check that the user turned on their device location and ask
         //  again if they did not
+        if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
+            checkDeviceLocationSettingsAndStartGeofence(false)
+        }
     }
 
     /*
@@ -122,22 +121,23 @@ class HuntMainActivity : AppCompatActivity() {
      * the background permission as well.
      */
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         // DONE: Step 5 add code to handle the result of the user's permission
         //  NOTE: this step was copied from the solution code
         Log.d(TAG, "onRequestPermissionResult")
         if (grantResults.isEmpty()
-                || grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED
-                || (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
-                        && grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED)) {
+            || grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED
+            || (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
+                    && grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED)
+        ) {
             // Permission denied
             Snackbar.make(
-                    binding.activityMapsMain,
-                    R.string.permission_denied_explanation,
-                    Snackbar.LENGTH_INDEFINITE
+                binding.activityMapsMain,
+                R.string.permission_denied_explanation,
+                Snackbar.LENGTH_INDEFINITE
             ).setAction(R.string.settings) {
                 // Displays App setting screen
                 startActivity(Intent().apply {
@@ -178,7 +178,45 @@ class HuntMainActivity : AppCompatActivity() {
      *  the opportunity to turn on location services within our app.
      */
     private fun checkDeviceLocationSettingsAndStartGeofence(resolve: Boolean = true) {
-        // TODO: Step 6 add code to check that the device's location is on
+        // DONE: Step 6 add code to check that the device's location is on
+        // DONE: Step 6.0 create the locationRequest with low priority
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_LOW_POWER
+        }
+        // DONE: Step 6.1 create a builder from LocationSettingsRequest.Builder passing the location locationRequest
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        // DONE: Step 6.2 get the client settings from LocationServices.getSettingsClient to check the location setting
+        val settingsClient = LocationServices.getSettingsClient(this)
+        // DONE: Step 6.3 check and store the result of location settings passing in the builder
+        val locationSettingsResponseTask = settingsClient.checkLocationSettings(builder.build())
+        // DONE: Step 6.4 add an onFailureListener() to the locationSettingsResponseTask to find out if the location settings are not satisfied
+        locationSettingsResponseTask.addOnFailureListener { exception ->
+            // DONE: Step 6.5 Check if the exception is of type ResolvableApiException and if so, try calling the startResolutionForResult() method in order to prompt the user to turn on device location
+            if (exception is ResolvableApiException && resolve) {
+                try {
+                    exception.startResolutionForResult(this, REQUEST_TURN_DEVICE_LOCATION_ON)
+                } catch (sendEx: IntentSender.SendIntentException) {
+//                    If calling startResolutionForResult enters the catch block, print a log
+                    Log.d(TAG, "Error getting location settings resolution: ${sendEx.message}")
+                }
+            } else {
+                // DONE: Step 6.6 If the exception is not of type ResolvableApiException, present a snackbar that alerts the user that location needs to be enabled
+                Snackbar.make(
+                    binding.activityMapsMain,
+                    R.string.location_required_error,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction(android.R.string.ok) {
+                    checkDeviceLocationSettingsAndStartGeofence()
+                }.show()
+            }
+        }
+        // DONE: Step 6.7 add an addOnCompleteListener to the locationSettingsResponseTask and check that it is successful, if so, add the geofence
+        locationSettingsResponseTask.addOnCompleteListener {
+            if (it.isSuccessful) {
+                addGeofenceForClue()
+            }
+        }
+
     }
 
     /*
@@ -192,14 +230,14 @@ class HuntMainActivity : AppCompatActivity() {
         //  NOTE: this step was copied from the solution code
         // We check the same permission added in AndroidManifest
         val backgroundLocationApproved = ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            this,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
         val foregroundLocationApproved =
-                ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
         return backgroundLocationApproved && foregroundLocationApproved
     }
 
@@ -251,7 +289,7 @@ class HuntMainActivity : AppCompatActivity() {
 
     companion object {
         internal const val ACTION_GEOFENCE_EVENT =
-                "HuntMainActivity.treasureHunt.action.ACTION_GEOFENCE_EVENT"
+            "HuntMainActivity.treasureHunt.action.ACTION_GEOFENCE_EVENT"
     }
 }
 

@@ -18,6 +18,7 @@ package com.example.android.treasureHunt
 
 import android.Manifest
 import android.annotation.TargetApi
+import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -25,6 +26,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -32,10 +34,7 @@ import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.treasureHunt.databinding.ActivityHuntMainBinding
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.GeofencingClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -62,7 +61,15 @@ class HuntMainActivity : AppCompatActivity() {
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
-    // TODO: Step 8 add in a pending intent
+    // DONE: Step 8 add in a pending intent
+    private val geofencePendingIntent: PendingIntent by lazy {
+        val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
+            .apply {
+                action = ACTION_GEOFENCE_EVENT
+            }
+        PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +82,8 @@ class HuntMainActivity : AppCompatActivity() {
         ).get(GeofenceViewModel::class.java)
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
-        // TODO: Step 9 instantiate the geofencing client
+        // DONE: Step 9 instantiate the geofencing client
+        geofencingClient = LocationServices.getGeofencingClient(this)
 
         // Create channel for notifications
         createChannel(this)
@@ -276,7 +284,83 @@ class HuntMainActivity : AppCompatActivity() {
      * is now "active."
      */
     private fun addGeofenceForClue() {
-        // TODO: Step 10 add in code to add the geofence
+        // DONE: Step 10 add in code to add the geofence
+        // DONE: Step 10.1 check if we have any active geofences for our treasure hunt.
+        //  If we already do, we shouldn't add another
+        if (viewModel.geofenceIsActive())
+            return
+
+        // DONE: Step 10.2 get the currentGeofenceIndex using the viewModel.
+        //  If the index is higher than the number of landmarks we have, it means the user has found all the treasures.
+        //  Remove geofences
+        //  call geofenceActivated on the viewModel
+        //  then return
+        val currentGeofenceIndex = viewModel.nextGeofenceIndex()
+        if (currentGeofenceIndex >= GeofencingConstants.NUM_LANDMARKS) {
+            removeGeofences()
+            viewModel.geofenceActivated()
+            return
+        }
+        // DONE: Step 10.3 Once you have the index and know it is valid, get the data surrounding the geofence
+        val currentGeofenceData = GeofencingConstants.LANDMARK_DATA[currentGeofenceIndex]
+
+        // DONE: Step 10.4 Build the geofence using the geofence builder, the information in currentGeofenceData, like
+        //  the id and
+        //  the latitude and longitude to create the circular region.
+        //  Set the expiration duration using the constant set in GeofencingConstants.
+        //  Set the transition type to GEOFENCE_TRANSITION_ENTER.
+        //  Finally, build the geofence.
+        val geofence = Geofence.Builder()
+            .apply {
+                setRequestId(currentGeofenceData.id)
+                setCircularRegion(
+                    currentGeofenceData.latLong.latitude,
+                    currentGeofenceData.latLong.longitude,
+                    GeofencingConstants.GEOFENCE_RADIUS_IN_METERS
+                )
+                setExpirationDuration(GeofencingConstants.GEOFENCE_EXPIRATION_IN_MILLISECONDS)
+                setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+            }.build()
+
+        // DONE: Step 10.5 Build the geofence request
+        //  Set the initial trigger to INITIAL_TRIGGER_ENTER,
+        //  add the geofence you just built
+        //  and then build
+        val geofencingRequest = GeofencingRequest.Builder()
+            .apply {
+                setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                addGeofence(geofence)
+            }.build()
+
+        // DONE: Step 10.6 Call removeGeofences() on the geofencingClient to remove any geofences already associated to the pending intent
+        geofencingClient.removeGeofences(geofencePendingIntent)?.run {
+            // DONE: Step 10.7 When removeGeofences() completes, regardless of its success or failure, add the new geofences
+            addOnCompleteListener {
+                geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent)?.run {
+                    // DONE: Step 10.8 If adding the geofences is successful, let the user know through a toast that they were successful
+                    addOnSuccessListener {
+                        Toast.makeText(
+                            this@HuntMainActivity,
+                            R.string.geofences_added,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        Log.e("Add Geofence", geofence.requestId)
+                        viewModel.geofenceActivated()
+                    }
+                    // DONE: Step 10.9 If adding the geofences fails, present a toast letting the user know that there was an issue in adding the geofences.
+                    addOnFailureListener {
+                        Toast.makeText(
+                            this@HuntMainActivity,
+                            R.string.geofences_not_added,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        it.message?.let { message ->
+                            Log.w(TAG, message)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

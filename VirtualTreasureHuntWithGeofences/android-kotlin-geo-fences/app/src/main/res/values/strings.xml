@@ -19,16 +19,14 @@
     <string name="title_activity_hunt">Treasure Hunt</string>
 
     <!--    Permissions Strings-->
-    <string
-        name="permission_rationale">Location permission needed for core functionality of the game.
+    <string name="permission_rationale">Location permission needed for core functionality of the game.
     </string>
 
     <string name="permission_denied_explanation">
         You need to grant location permission in order to play this game.
     </string>
     <string name="settings">Settings</string>
-    <string
-        name="location_setting_off">Please turn on device location in Settings and try again.
+    <string name="location_setting_off">Please turn on device location in Settings and try again.
     </string>
 
     <!--    Geofence Status Strings-->
@@ -73,5 +71,11 @@
 
     <!-- Content Description Strings -->
     <string name="android_map_description">An Android robot with a map</string>
+
+    <!--DONE: Step 13.1 add in your custom hint and location.-->
+    <!-- Geofence Hints -->
+    <string name="lombard_street_hint">Go to the most crooked street in the City</string>
+    <!-- Geofence Locations -->
+    <string name="lombard_street_location">at Lombard Street</string>
 
 </resources>

@@ -31,6 +31,10 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel for the task list screen.
  */
+// DONE Step 6:
+//  Right click on the class name TasksViewModel -> Generate -> Test.
+//  On the Create Test screen, click OK to accept (no need to change any of the default settings).
+//  On the Choose Destination Directory dialog, choose the test directory.
 class TasksViewModel(application: Application) : AndroidViewModel(application) {
 
     // Note, for testing and architecture purposes, it's bad practice to construct the repository
@@ -109,20 +113,20 @@ class TasksViewModel(application: Application) : AndroidViewModel(application) {
         when (requestType) {
             TasksFilterType.ALL_TASKS -> {
                 setFilter(
-                    R.string.label_all, R.string.no_tasks_all,
-                    R.drawable.logo_no_fill, true
+                        R.string.label_all, R.string.no_tasks_all,
+                        R.drawable.logo_no_fill, true
                 )
             }
             TasksFilterType.ACTIVE_TASKS -> {
                 setFilter(
-                    R.string.label_active, R.string.no_tasks_active,
-                    R.drawable.ic_check_circle_96dp, false
+                        R.string.label_active, R.string.no_tasks_active,
+                        R.drawable.ic_check_circle_96dp, false
                 )
             }
             TasksFilterType.COMPLETED_TASKS -> {
                 setFilter(
-                    R.string.label_completed, R.string.no_tasks_completed,
-                    R.drawable.ic_verified_user_96dp, false
+                        R.string.label_completed, R.string.no_tasks_completed,
+                        R.drawable.ic_verified_user_96dp, false
                 )
             }
         }
@@ -131,8 +135,8 @@ class TasksViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun setFilter(
-        @StringRes filteringLabelString: Int, @StringRes noTasksLabelString: Int,
-        @DrawableRes noTaskIconDrawable: Int, tasksAddVisible: Boolean
+            @StringRes filteringLabelString: Int, @StringRes noTasksLabelString: Int,
+            @DrawableRes noTaskIconDrawable: Int, tasksAddVisible: Boolean
     ) {
         _currentFilteringLabel.value = filteringLabelString
         _noTasksLabel.value = noTasksLabelString
@@ -211,21 +215,21 @@ class TasksViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun filterItems(tasks: List<Task>, filteringType: TasksFilterType): List<Task> {
-            val tasksToShow = ArrayList<Task>()
-            // We filter the tasks based on the requestType
-            for (task in tasks) {
-                when (filteringType) {
-                    TasksFilterType.ALL_TASKS -> tasksToShow.add(task)
-                    TasksFilterType.ACTIVE_TASKS -> if (task.isActive) {
-                        tasksToShow.add(task)
-                    }
-                    TasksFilterType.COMPLETED_TASKS -> if (task.isCompleted) {
-                        tasksToShow.add(task)
-                    }
+        val tasksToShow = ArrayList<Task>()
+        // We filter the tasks based on the requestType
+        for (task in tasks) {
+            when (filteringType) {
+                TasksFilterType.ALL_TASKS -> tasksToShow.add(task)
+                TasksFilterType.ACTIVE_TASKS -> if (task.isActive) {
+                    tasksToShow.add(task)
+                }
+                TasksFilterType.COMPLETED_TASKS -> if (task.isCompleted) {
+                    tasksToShow.add(task)
                 }
             }
-            return tasksToShow
         }
+        return tasksToShow
+    }
 
     fun refresh() {
         _forceUpdate.value = true

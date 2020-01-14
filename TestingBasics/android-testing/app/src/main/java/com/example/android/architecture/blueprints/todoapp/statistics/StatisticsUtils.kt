@@ -21,12 +21,16 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 /**
  * Function that does some trivial computation. Used to showcase unit tests.
  */
+// DONE: Step 1.0 Right click getActiveAndCompletedStats and select Generate then Test
+//  Change the Class name to StatisticsUtilsTest.
+//  Keep the rest of the defaults and press OK.
+//  Select the test directory (not androidTest) because you'll be writing local tests. Press OK.
 internal fun getActiveAndCompletedStats(tasks: List<Task>?): StatsResult {
     val totalTasks = tasks!!.size
     val numberOfActiveTasks = tasks.count { it.isActive }
     return StatsResult(
-        activeTasksPercent = 100f * numberOfActiveTasks / tasks.size,
-        completedTasksPercent = 100f * (totalTasks - numberOfActiveTasks) / tasks.size
+            activeTasksPercent = 100f * numberOfActiveTasks / tasks.size,
+            completedTasksPercent = 100f * (totalTasks - numberOfActiveTasks) / tasks.size
     )
 }
 

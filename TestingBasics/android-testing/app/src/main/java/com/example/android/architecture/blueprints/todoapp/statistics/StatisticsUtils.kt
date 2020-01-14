@@ -26,12 +26,17 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 //  Keep the rest of the defaults and press OK.
 //  Select the test directory (not androidTest) because you'll be writing local tests. Press OK.
 internal fun getActiveAndCompletedStats(tasks: List<Task>?): StatsResult {
-    val totalTasks = tasks!!.size
-    val numberOfActiveTasks = tasks.count { it.isActive }
-    return StatsResult(
-            activeTasksPercent = 100f * numberOfActiveTasks / tasks.size,
-            completedTasksPercent = 100f * (totalTasks - numberOfActiveTasks) / tasks.size
-    )
+    // DONE Step 4.4: Update to remove the bug where the wrong values are returned on an empty list and error.
+    return if (tasks.isNullOrEmpty()) {
+        StatsResult(activeTasksPercent = 0f, completedTasksPercent = 0f)
+    } else {
+        val totalTasks = tasks.size
+        val numberOfActiveTasks = tasks.count { it.isActive }
+        StatsResult(
+                activeTasksPercent = 100f * numberOfActiveTasks / tasks.size,
+                completedTasksPercent = 100f * (totalTasks - numberOfActiveTasks) / tasks.size
+        )
+    }
 }
 
 data class StatsResult(val activeTasksPercent: Float, val completedTasksPercent: Float)

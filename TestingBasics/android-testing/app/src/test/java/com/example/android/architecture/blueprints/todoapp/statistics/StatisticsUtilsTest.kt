@@ -45,4 +45,29 @@ class StatisticsUtilsTest {
         assertEquals(40f, result.completedTasksPercent)
         assertEquals(60f, result.activeTasksPercent)
     }
+
+    // DONE Step 4: Write some tests for the buggy edge cases
+    // DONE Step 4.1: If there is an empty list (emptyList()), then both percentages should be 0f.
+    @Test
+    fun getActiveAndCompletedStats_empty_returnsZeros() {
+        val tasks = emptyList<Task>()
+
+        val result = getActiveAndCompletedStats(tasks)
+
+        assertEquals(0f, result.completedTasksPercent)
+        assertEquals(0f, result.activeTasksPercent)
+    }
+
+    // DONE Step 4.2: If there was an error loading tasks, the list will be null, then both percentages should be 0f.
+    @Test
+    fun getActiveAndCompletedStats_error_returnsZeros() {
+        val tasks = null
+
+        val result = getActiveAndCompletedStats(tasks)
+
+        assertEquals(0f, result.completedTasksPercent)
+        assertEquals(0f, result.activeTasksPercent)
+    }
+    // DONE Step 4.3 run the tests to confirm these tests fail.
+    // NOTE When following TDD, you'll write the tests first and then update the actual code.
 }

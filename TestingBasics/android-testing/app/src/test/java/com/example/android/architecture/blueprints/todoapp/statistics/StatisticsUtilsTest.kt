@@ -1,6 +1,7 @@
 package com.example.android.architecture.blueprints.todoapp.statistics
 
 import com.example.android.architecture.blueprints.todoapp.data.Task
+import org.hamcrest.CoreMatchers.`is`
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -21,8 +22,8 @@ class StatisticsUtilsTest {
         val result = getActiveAndCompletedStats(tasks)
 
         // DONE Step 2.3 Check the result
-        assertEquals(0f, result.completedTasksPercent)
-        assertEquals(100f, result.activeTasksPercent)
+        assertThat(result.completedTasksPercent, `is`(0f))
+        assertThat(result.activeTasksPercent, `is`(100f))
     }
 
     // DONE Step 3.1: Start by writing test for when you have a normal task list:
@@ -42,8 +43,8 @@ class StatisticsUtilsTest {
         val result = getActiveAndCompletedStats(tasks)
 
         // DONE Step 3.4 Check the result
-        assertEquals(40f, result.completedTasksPercent)
-        assertEquals(60f, result.activeTasksPercent)
+        assertThat(result.completedTasksPercent, `is`(40f))
+        assertThat(result.activeTasksPercent, `is`(60f))
     }
 
     // DONE Step 4: Write some tests for the buggy edge cases
@@ -54,8 +55,8 @@ class StatisticsUtilsTest {
 
         val result = getActiveAndCompletedStats(tasks)
 
-        assertEquals(0f, result.completedTasksPercent)
-        assertEquals(0f, result.activeTasksPercent)
+        assertThat(result.completedTasksPercent, `is`(0f))
+        assertThat(result.activeTasksPercent, `is`(0f))
     }
 
     // DONE Step 4.2: If there was an error loading tasks, the list will be null, then both percentages should be 0f.
@@ -65,9 +66,11 @@ class StatisticsUtilsTest {
 
         val result = getActiveAndCompletedStats(tasks)
 
-        assertEquals(0f, result.completedTasksPercent)
-        assertEquals(0f, result.activeTasksPercent)
+        assertThat(result.completedTasksPercent, `is`(0f))
+        assertThat(result.activeTasksPercent, `is`(0f))
     }
     // DONE Step 4.3 run the tests to confirm these tests fail.
     // NOTE When following TDD, you'll write the tests first and then update the actual code.
+
+    // DONE Step 5.1: Update your tests so that all of your assertions use Hamcrest.
 }

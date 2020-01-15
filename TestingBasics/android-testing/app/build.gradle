@@ -78,4 +78,7 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
 
+    // DONE Step 8: Add InstantTaskExecutor gradle dependency
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+
 }

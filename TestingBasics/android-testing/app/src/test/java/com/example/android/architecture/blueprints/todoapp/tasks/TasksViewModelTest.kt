@@ -1,15 +1,27 @@
 package com.example.android.architecture.blueprints.todoapp.tasks
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
+import org.hamcrest.CoreMatchers.not
+import org.hamcrest.CoreMatchers.nullValue
+import org.junit.Assert.assertThat
+import org.junit.Rule
 import org.junit.Test
-
-import org.junit.Assert.*
 import org.junit.runner.RunWith
 
 // DONE Step 6.5 Add the AndoirdJUnit4 test runner:
 @RunWith(AndroidJUnit4::class)
 class TasksViewModelTest {
+
+    // DONE Step 8.1 create a variable from InstantTaskExecutorRule
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    // DONE Step 8.2 make a new Kotlin file called LiveDataTestUtil.kt in your test source set
+    // DONE Step 8.3 Copy and paste the provided code
+    //  NOTE for full explanatioon follow the link https://medium.com/androiddevelopers/unit-testing-livedata-and-other-common-observability-problems-bb477262eb04
 
     // DONE Step 6.1: Create a new test called addNewTask_setsNewTaskEvent:
     @Test
@@ -23,7 +35,12 @@ class TasksViewModelTest {
         // DONE Step 6.4 add a new task
         taskViewModel.addNewTask()
 
-
         // Then the new task event is triggered
+        // DONE Step 8.4 Get the LiveData value for newTaskEvent using getOrAwaitValue
+        val value = taskViewModel.newTaskEvent.getOrAwaitValue()
+
+        // DONE Step 8.5 Assert that the value is not null:
+        assertThat(value.getContentIfNotHandled(), (not(nullValue())))
+
     }
 }

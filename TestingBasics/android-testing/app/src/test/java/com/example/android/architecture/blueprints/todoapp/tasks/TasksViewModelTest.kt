@@ -6,6 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
 import org.hamcrest.CoreMatchers.*
 import org.junit.Assert.assertThat
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -13,6 +14,16 @@ import org.junit.runner.RunWith
 // DONE Step 6.5 Add the AndoirdJUnit4 test runner:
 @RunWith(AndroidJUnit4::class)
 class TasksViewModelTest {
+
+    // DONE Step 10.0: Create a lateinit instance variable called tasksViewModel
+    private lateinit var taskViewModel: TasksViewModel
+
+    // DONE Step 10.1 Create a method called setupViewModel and annotate it with @Before
+    @Before
+    fun setUpViewModel() {
+        // DONE Step 10.2 Move the view model instantiation code to setupViewModel
+        taskViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+    }
 
     // DONE Step 8.1 create a variable from InstantTaskExecutorRule
     @get:Rule
@@ -27,7 +38,7 @@ class TasksViewModelTest {
     fun addNewTask_setsNewTaskEvent() {
         // Given a fresh TasksViewModel
         // DONE Step 6.3 Create a TasksViewModel using ApplicationProvider.getApplicationContext() from the AndroidX test library
-        val taskViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+//        val taskViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
 
 
         // When adding a new task
@@ -50,13 +61,13 @@ class TasksViewModelTest {
     @Test
     fun setFilterAllTasks_tasksAddViewVisible() {
         // Given a fresh ViewModel
-        val tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+//        val tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
 
         // When the filter type is ALL_TASKS
-        tasksViewModel.setFiltering(TasksFilterType.ALL_TASKS)
+        taskViewModel.setFiltering(TasksFilterType.ALL_TASKS)
 
         // Then the "Add task" action is visible
-        val tasksAddViewVisible = tasksViewModel.tasksAddViewVisible.getOrAwaitValue()
+        val tasksAddViewVisible = taskViewModel.tasksAddViewVisible.getOrAwaitValue()
         assertThat(tasksAddViewVisible, `is`(true))
 
     }

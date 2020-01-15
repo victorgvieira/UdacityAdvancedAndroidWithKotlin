@@ -25,6 +25,12 @@ android {
         enabled = true
         enabledForTests = true
     }
+    // DONE Step 7: Add the following line in your gradle to so that the correct android manifest is used
+    // Always show the result of every unit test when running via command line, even if it passes.
+    // Allows you to access android resources in your unit tests, including your AndroidManifest file
+    testOptions.unitTests {
+        includeAndroidResources = true
+    }
 }
 
 dependencies {

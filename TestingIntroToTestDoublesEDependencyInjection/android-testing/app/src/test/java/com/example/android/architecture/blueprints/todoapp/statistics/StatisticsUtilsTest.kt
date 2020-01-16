@@ -1,5 +1,5 @@
 /*
- * Copyright 2019, The Android Open Source Project
+ * Copyright (C) 2019 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package com.example.android.architecture.blueprints.todoapp.statistics
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
-import org.junit.Ignore
 import org.junit.Test
 
 /**
@@ -28,25 +27,7 @@ import org.junit.Test
 class StatisticsUtilsTest {
 
     @Test
-    fun getActiveAndCompletedStats_error() {
-        // When there's an error loading stats
-        // TODO
-
-        // Both active and completed tasks are 0
-        // TODO
-    }
-
-    @Test
-    fun getActiveAndCompletedStats_empty() {
-        // When there are no tasks
-        // TODO
-
-        // Both active and completed tasks are 0
-        // TODO
-    }
-
-    @Test
-    fun getActiveAndCompletedStats_noCompleted() {
+    fun getActiveAndCompletedStats_noCompleted_returnsHundredZero() {
         val tasks = listOf(
             Task("title", "desc", isCompleted = false)
         )
@@ -59,7 +40,7 @@ class StatisticsUtilsTest {
     }
 
     @Test
-    fun getActiveAndCompletedStats_noActive() {
+    fun getActiveAndCompletedStats_noActive_returnsZeroHundred() {
         val tasks = listOf(
             Task("title", "desc", isCompleted = true)
         )
@@ -72,7 +53,7 @@ class StatisticsUtilsTest {
     }
 
     @Test
-    fun getActiveAndCompletedStats_both() {
+    fun getActiveAndCompletedStats_both_returnsFortySixty() {
         // Given 3 completed tasks and 2 active tasks
         val tasks = listOf(
             Task("title", "desc", isCompleted = true),
@@ -90,8 +71,7 @@ class StatisticsUtilsTest {
     }
 
     @Test
-    @Ignore
-    fun getActiveAndCompletedStats_error_solution() {
+    fun getActiveAndCompletedStats_error_returnsZeros() {
         // When there's an error loading stats
         val result = getActiveAndCompletedStats(null)
 
@@ -101,8 +81,7 @@ class StatisticsUtilsTest {
     }
 
     @Test
-    @Ignore
-    fun getActiveAndCompletedStats_empty_solution() {
+    fun getActiveAndCompletedStats_empty_returnsZeros() {
         // When there are no tasks
         val result = getActiveAndCompletedStats(emptyList())
 

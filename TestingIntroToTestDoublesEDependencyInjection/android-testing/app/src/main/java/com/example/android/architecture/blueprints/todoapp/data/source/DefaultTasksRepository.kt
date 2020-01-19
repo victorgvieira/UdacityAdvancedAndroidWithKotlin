@@ -38,33 +38,50 @@ import kotlinx.coroutines.withContext
 /**
  * Concrete implementation to load tasks from the data sources into a cache.
  */
-class DefaultTasksRepository private constructor(application: Application) {
+// DONE Step 2.0: Change the DefaultTaskRepository's constructor,
+//  from taking in an Application to taking in both data sources and the coroutine dispatcher
+//  also remove the private visibility
+// DONE Step 2.4
+//  Right click on the DefaultTasksRepository class name and select Generate then Test.
+//  Follow the prompts to create DefaultTasksRepositoryTest in the test source set.
+class DefaultTasksRepository constructor(
+        private val tasksRemoteDataSource: TasksDataSource,
+        private val tasksLocalDataSource: TasksDataSource,
+        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) {
 
-    private val tasksRemoteDataSource: TasksDataSource
-    private val tasksLocalDataSource: TasksDataSource
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+
+    // DONE Step 2.2: Delete the old instance variables. You're defining them in the constructor:
+//    private val tasksRemoteDataSource: TasksDataSource
+//    private val tasksLocalDataSource: TasksDataSource
+//    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
     companion object {
         @Volatile
         private var INSTANCE: DefaultTasksRepository? = null
 
+        // DONE Step 2.3: Update the getRepository method to use the new constructor:
         fun getRepository(app: Application): DefaultTasksRepository {
             return INSTANCE ?: synchronized(this) {
-                DefaultTasksRepository(app).also {
+                val database = Room.databaseBuilder(app,
+                        ToDoDatabase::class.java, "Tasks.db")
+                        .build()
+                DefaultTasksRepository(TasksRemoteDataSource, TasksLocalDataSource(database.taskDao())).also {
                     INSTANCE = it
                 }
             }
         }
     }
 
-    init {
-        val database = Room.databaseBuilder(application.applicationContext,
-                ToDoDatabase::class.java, "Tasks.db")
-                .build()
-
-        tasksRemoteDataSource = TasksRemoteDataSource
-        tasksLocalDataSource = TasksLocalDataSource(database.taskDao())
-    }
+    // DONE Step 2.1: Because we passed the dependencies in, remove the init method.
+    //  You no longer need to create the dependencies.
+//    init {
+//        val database = Room.databaseBuilder(application.applicationContext,
+//                ToDoDatabase::class.java, "Tasks.db")
+//                .build()
+//
+//        tasksRemoteDataSource = TasksRemoteDataSource
+//        tasksLocalDataSource = TasksLocalDataSource(database.taskDao())
+//    }
 
     suspend fun getTasks(forceUpdate: Boolean = false): Result<List<Task>> {
         if (forceUpdate) {

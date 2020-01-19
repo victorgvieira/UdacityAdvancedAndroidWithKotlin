@@ -30,6 +30,11 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+//DONE Step 1: Create the FakeDataSource Class which will be a test double of a LocalDataSource and RemoteDataSource.
+//  - In the test source set, right click select New -> Package.
+//  - Make a data package with a source package inside.
+//  - Create a new class called FakeDataSource in the data/source package:
+
 /**
  * Concrete implementation to load tasks from the data sources into a cache.
  */
@@ -54,8 +59,8 @@ class DefaultTasksRepository private constructor(application: Application) {
 
     init {
         val database = Room.databaseBuilder(application.applicationContext,
-            ToDoDatabase::class.java, "Tasks.db")
-            .build()
+                ToDoDatabase::class.java, "Tasks.db")
+                .build()
 
         tasksRemoteDataSource = TasksRemoteDataSource
         tasksLocalDataSource = TasksLocalDataSource(database.taskDao())
@@ -113,7 +118,7 @@ class DefaultTasksRepository private constructor(application: Application) {
     /**
      * Relies on [getTasks] to fetch data and picks the task with the same ID.
      */
-    suspend fun getTask(taskId: String,  forceUpdate: Boolean = false): Result<Task> {
+    suspend fun getTask(taskId: String, forceUpdate: Boolean = false): Result<Task> {
         if (forceUpdate) {
             updateTaskFromRemoteDataSource(taskId)
         }

@@ -26,6 +26,7 @@ import timber.log.Timber.DebugTree
  *
  * Also, sets up Timber in the DEBUG BuildConfig. Read Timber's documentation for production setups.
  */
+// DONE Steo 6.0: Create the file ServiceLocator.kt in the top level of the main source set
 class TodoApplication : Application() {
 
     override fun onCreate() {

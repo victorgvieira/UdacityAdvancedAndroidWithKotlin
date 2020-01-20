@@ -20,9 +20,9 @@ object ServiceLocator {
     // DONE Step 6.4 create the function provideTasksRepository
     //  - Either provides an already existing repository or creates a new one.
     //  This method should be synchronized on this to avoid, in situations with multiple threads running, ever accidentally creating two repository instances.
-    fun provideTasksRepository(context: Context) {
+    fun provideTasksRepository(context: Context): TasksRepository {
         synchronized(this) {
-            tasksRepository ?: createTasksRepository(context)
+            return tasksRepository ?: createTasksRepository(context)
         }
     }
 

@@ -77,4 +77,13 @@ dependencies {
 
   // DONE Step 2.11: Add the required dependencies for testing coroutines to the test source set by using testImplementation
   testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+
+  // DONE Step 5.0 Add the following gradle dependencies
+  // Dependencies for Android instrumented unit tests
+  androidTestImplementation "junit:junit:$junitVersion"
+  androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+  // Testing code should not be included in the main code.
+  // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.
+  implementation "androidx.fragment:fragment-testing:$fragmentVersion"
+  implementation "androidx.test:core:$androidXTestCoreVersion"
 }

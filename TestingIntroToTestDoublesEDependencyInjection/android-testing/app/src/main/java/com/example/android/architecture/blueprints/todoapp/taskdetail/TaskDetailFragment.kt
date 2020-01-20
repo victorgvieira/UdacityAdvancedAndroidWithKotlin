@@ -38,6 +38,9 @@ import com.google.android.material.snackbar.Snackbar
 /**
  * Main UI for the task detail screen.
  */
+// DONE Step 5.1: Generate a test for TaskDetailFragment as you've done before.
+//  - Accept the default choices
+//  - and put it in the androidTest source set, NOT the test source set
 class TaskDetailFragment : Fragment() {
     private lateinit var viewDataBinding: TaskdetailFragBinding
 

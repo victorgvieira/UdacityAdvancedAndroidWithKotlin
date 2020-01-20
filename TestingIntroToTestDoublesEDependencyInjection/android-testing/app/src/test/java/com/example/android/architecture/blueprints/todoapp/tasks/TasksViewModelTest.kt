@@ -17,30 +17,42 @@
 package com.example.android.architecture.blueprints.todoapp.tasks
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.android.architecture.blueprints.todoapp.data.Task
+import com.example.android.architecture.blueprints.todoapp.data.source.FakeTestRepository
 import com.example.android.architecture.blueprints.todoapp.getOrAwaitValue
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-
-@RunWith(AndroidJUnit4::class)
+//DONE Step 4.5 Because you are no longer using the AndroidX Test ApplicationProvider.getApplicationContext
+// code, remove the @RunWith(AndroidJUnit4::class) annotation.
+//@RunWith(AndroidJUnit4::class)
 class TasksViewModelTest {
 
     // Subject under test
     private lateinit var tasksViewModel: TasksViewModel
 
+    // DONE Step 4.3: Add a FakeTestRepository property in the TasksViewModelTest
+    private lateinit var taskRepository: FakeTestRepository
+
     // Executes each task synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+    // DONE Step 4.4: Update the setupViewModel method to make a FakeTestRepository with three tasks,
+    //  one active and two completed
+    //  and then construct the tasksViewModel with this repository.
     @Before
     fun setupViewModel() {
-        tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+        taskRepository = FakeTestRepository()
+        val task1 = Task("Title1,", "Description1")
+        val task2 = Task("Title2,", "Description2", true)
+        val task3 = Task("Title3,", "Description3", true)
+        taskRepository.addTasks(task1, task2, task3)
+
+        tasksViewModel = TasksViewModel(taskRepository)
     }
 
 

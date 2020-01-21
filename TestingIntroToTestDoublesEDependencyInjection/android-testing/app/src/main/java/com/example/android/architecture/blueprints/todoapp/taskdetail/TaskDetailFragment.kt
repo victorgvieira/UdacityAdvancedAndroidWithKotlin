@@ -28,6 +28,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.architecture.blueprints.todoapp.EventObserver
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.TodoApplication
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
 import com.example.android.architecture.blueprints.todoapp.databinding.TaskdetailFragBinding
 import com.example.android.architecture.blueprints.todoapp.tasks.DELETE_RESULT_OK
@@ -48,7 +49,8 @@ class TaskDetailFragment : Fragment() {
 
     // DONE Step 4.8: Update the TaskDetailFragment to use the factory.
     private val viewModel by viewModels<TaskDetailViewModel> {
-        TaskDetailViewModelFactory(DefaultTasksRepository.getRepository(requireActivity().application))
+        // DONE Step 7.2: Replace the DefaultTasksRepository.getRepository call with a call that gets the repository from TodoApplication
+        TaskDetailViewModelFactory((requireActivity().application as TodoApplication).tasksRepository)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -17,6 +17,7 @@
 package com.example.android.architecture.blueprints.todoapp
 
 import android.app.Application
+import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -28,6 +29,11 @@ import timber.log.Timber.DebugTree
  */
 // DONE Steo 6.0: Create the file ServiceLocator.kt in the top level of the main source set
 class TodoApplication : Application() {
+
+    // DONE Step 7.0: create a val for your repository and assign it a repository
+    //  that is obtained using ServiceLocator.provideTaskRepository
+    val tasksRepository: TasksRepository
+        get() = ServiceLocator.provideTasksRepository(this)
 
     override fun onCreate() {
         super.onCreate()

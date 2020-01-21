@@ -67,22 +67,23 @@ class DefaultTasksRepository constructor(
 //    private val tasksLocalDataSource: TasksDataSource
 //    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
-    companion object {
-        @Volatile
-        private var INSTANCE: DefaultTasksRepository? = null
-
-        // DONE Step 2.3: Update the getRepository method to use the new constructor:
-        fun getRepository(app: Application): DefaultTasksRepository {
-            return INSTANCE ?: synchronized(this) {
-                val database = Room.databaseBuilder(app,
-                        ToDoDatabase::class.java, "Tasks.db")
-                        .build()
-                DefaultTasksRepository(TasksRemoteDataSource, TasksLocalDataSource(database.taskDao())).also {
-                    INSTANCE = it
-                }
-            }
-        }
-    }
+    // DONE Step 7.1: delete the companion object
+//    companion object {
+//        @Volatile
+//        private var INSTANCE: DefaultTasksRepository? = null
+//
+//        // DONE Step 2.3: Update the getRepository method to use the new constructor:
+//        fun getRepository(app: Application): DefaultTasksRepository {
+//            return INSTANCE ?: synchronized(this) {
+//                val database = Room.databaseBuilder(app,
+//                        ToDoDatabase::class.java, "Tasks.db")
+//                        .build()
+//                DefaultTasksRepository(TasksRemoteDataSource, TasksLocalDataSource(database.taskDao())).also {
+//                    INSTANCE = it
+//                }
+//            }
+//        }
+//    }
 
     // DONE Step 2.1: Because we passed the dependencies in, remove the init method.
     //  You no longer need to create the dependencies.

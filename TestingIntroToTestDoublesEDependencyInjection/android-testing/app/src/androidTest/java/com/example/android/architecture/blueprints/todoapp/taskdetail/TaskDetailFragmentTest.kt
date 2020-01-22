@@ -38,7 +38,7 @@ class TaskDetailFragmentTest {
 
     //  DONE Step 8.7: Add a teardown method which cleans a FakeAndroidTestRepository after each test
     @After
-    fun cleanupDb() {
+    fun cleanupDb() = runBlockingTest {
         ServiceLocator.resetRepository()
     }
 

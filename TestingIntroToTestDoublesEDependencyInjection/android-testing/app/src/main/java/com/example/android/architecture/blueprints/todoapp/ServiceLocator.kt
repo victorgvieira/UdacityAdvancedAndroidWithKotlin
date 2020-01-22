@@ -1,6 +1,7 @@
 package com.example.android.architecture.blueprints.todoapp
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
@@ -8,6 +9,7 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepo
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TasksLocalDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.local.ToDoDatabase
 import com.example.android.architecture.blueprints.todoapp.data.source.remote.TasksRemoteDataSource
+import kotlinx.coroutines.runBlocking
 
 // DONE Step 6.1: Define an object called ServiceLocator.
 object ServiceLocator {
@@ -16,6 +18,11 @@ object ServiceLocator {
     // DONE Step 6.3: Annotate the repository with @Volatile because it could get used by multiple threads (@Volatile is explained in detail here).
     @Volatile
     var tasksRepository: TasksRepository? = null
+        //DONE Step 8.2: Mark the setter for tasksRepository as @VisibleForTesting.
+        @VisibleForTesting set
+
+    //DONE Step 8.3: Add an instance variable called lock with the Any value:
+    private val lock = Any()
 
     // DONE Step 6.4 create the function provideTasksRepository
     //  - Either provides an already existing repository or creates a new one.
@@ -50,6 +57,22 @@ object ServiceLocator {
                 .build()
         database = result
         return result
+    }
+
+    //DONE Step 8.4: Add a testing specific method called resetRepository
+    // which clears out the database and sets both the repository and database to null
+    @VisibleForTesting
+    fun resetRepository() = synchronized(lock) {
+        runBlocking {
+            TasksRemoteDataSource.deleteAllTasks()
+        }
+        // Clear all data to avoid test pollution.
+        database?.apply {
+            clearAllTables()
+            close()
+        }
+        tasksRepository = null
+        database = null
     }
 
 }

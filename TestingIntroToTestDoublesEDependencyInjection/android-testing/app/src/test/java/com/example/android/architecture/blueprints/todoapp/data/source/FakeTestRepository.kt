@@ -6,6 +6,12 @@ import com.example.android.architecture.blueprints.todoapp.data.Result
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import kotlinx.coroutines.runBlocking
 
+// DONE Step 8.0:
+//  - Right click the androidTest source set and make a data package.
+//  - Right click again and make a source package.
+//  - Make new class in this source package called FakeAndroidTestRepository.kt.
+//  - Copy this class code to that class
+//  - Rename the copied class name to FakeAndroidTestRepository
 class FakeTestRepository : TasksRepository {
     // DONE Step 3.2 Add a LinkedHashMap variable representing the current list of tasks
     private var taskServiceData: LinkedHashMap<String, Task> = LinkedHashMap()

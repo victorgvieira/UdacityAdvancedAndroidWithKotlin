@@ -73,6 +73,10 @@ dependencies {
 //  DONE Step 9.1 add the dependencies for espresso external contributions for advanced fields
   androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
 
+  // DONE Step 11: Add Dependencies for Mockito
+  androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
+  androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion"
+
   // Kotlin
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
   implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"

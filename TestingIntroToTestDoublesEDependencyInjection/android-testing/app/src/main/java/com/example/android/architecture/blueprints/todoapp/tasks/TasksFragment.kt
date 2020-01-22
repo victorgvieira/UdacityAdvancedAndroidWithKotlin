@@ -43,6 +43,8 @@ import timber.log.Timber
 /**
  * Display a grid of [Task]s. User can choose to view all, active or completed tasks.
  */
+//  DONE Step 11.1: Right click on the TasksFragment class name and select Generate then Test.
+//   Create a test in the androidTest source set.
 class TasksFragment : Fragment() {
 
     // DONE 4.2 TasksFragment to use the factory

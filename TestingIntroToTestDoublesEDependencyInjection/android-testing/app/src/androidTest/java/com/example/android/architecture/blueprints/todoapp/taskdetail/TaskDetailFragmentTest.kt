@@ -75,4 +75,31 @@ class TaskDetailFragmentTest {
 
     //  DONE Step 9.0: On your testing device, go to Settings > Developer options.
     //    Disable these three settings: Window animation scale, Transition animation scale and Animator duration scale
+
+    //  DONE Step 10.0: Create a new test called completedTaskDetails_DisplayedInUi and copy over this skeleton code
+    //    Looking at the previous test, complete this test.
+    @Test
+    fun completedTaskDetails_DisplayedInUi() = runBlockingTest {
+        // GIVEN - Add completed task to the DB
+        val taskTitle = "Call to the doctor"
+        val taskDetail = "Use the number 9999 to call to the doctor"
+        val completedTask = Task(taskTitle, taskDetail, true)
+        tasksRepository.saveTask(completedTask)
+
+        // WHEN - Details fragment launched to display task
+        val bundle = TaskDetailFragmentArgs(completedTask.id).toBundle()
+        launchFragmentInContainer<TaskDetailFragment>(bundle, R.style.AppTheme)
+
+        // THEN - Task details are displayed on the screen
+        // make sure that the title/description are both shown and correct
+        onView(withId(R.id.task_detail_title_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_title_text)).check(matches(withText(taskTitle)))
+        onView(withId(R.id.task_detail_description_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_description_text)).check(matches(withText(taskDetail)))
+
+        // NOTE the assert for checkbox view it's not included in the Step description, but i'm adding here anyway
+        onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isChecked()))
+        Thread.sleep(2000)
+    }
 }

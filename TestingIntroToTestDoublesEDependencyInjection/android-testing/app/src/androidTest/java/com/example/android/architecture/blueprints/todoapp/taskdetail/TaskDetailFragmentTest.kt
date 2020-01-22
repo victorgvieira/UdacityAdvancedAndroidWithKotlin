@@ -1,6 +1,9 @@
 package com.example.android.architecture.blueprints.todoapp.taskdetail
 
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.example.android.architecture.blueprints.todoapp.R
@@ -10,6 +13,7 @@ import com.example.android.architecture.blueprints.todoapp.data.source.FakeAndro
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -51,7 +55,24 @@ class TaskDetailFragmentTest {
         val bundle = TaskDetailFragmentArgs(activeTask.id).toBundle()
         // DONE Step 5.6: The launchFragmentInContainer function creates a FragmentScenario, with this bundle and a theme.
         launchFragmentInContainer<TaskDetailFragment>(bundle, R.style.AppTheme)
+
+        //  DONE Step 9.2: Copy from the lesson code, everything after //THEN
+        //    fix the required imports from androidx.test.espresso
+        //    use org.hamcrest.core to import the 'not'
+        // THEN - Task details are displayed on the screen
+        // make sure that the title/description are both shown and correct
+        onView(withId(R.id.task_detail_title_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_title_text)).check(matches(withText("Active Task")))
+        onView(withId(R.id.task_detail_description_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_description_text)).check(matches(withText("AndroidX Rocks")))
+        // and make sure the "active" checkbox is shown unchecked
+        onView(withId(R.id.task_detail_complete_checkbox)).check(matches(isDisplayed()))
+        onView(withId(R.id.task_detail_complete_checkbox)).check(matches(not(isChecked())))
+
         // DONE Step 5.7: Set this thread to wait an amount of time to see the test running
         Thread.sleep(2000)
     }
+
+    //  DONE Step 9.0: On your testing device, go to Settings > Developer options.
+    //    Disable these three settings: Window animation scale, Transition animation scale and Animator duration scale
 }

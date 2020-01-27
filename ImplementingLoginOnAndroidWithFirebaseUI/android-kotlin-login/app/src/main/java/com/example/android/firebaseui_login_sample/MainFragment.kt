@@ -61,15 +61,31 @@ class MainFragment : Fragment() {
         observeAuthenticationState()
 
         binding.authButton.setOnClickListener {
-            // TODO call launchSignInFlow when authButton is clicked
+            // DONE Step 3.0: call launchSignInFlow when authButton is clicked
+            launchSignInFlow()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // TODO Listen to the result of the sign in process by filter for when
+        // DONE Step 3.2: Listen to the result of the sign in process by filter for when
         //  SIGN_IN_REQUEST_CODE is passed back. Start by having log statements to know
         //  whether the user has signed in successfully
+        if (requestCode == SIGN_IN_RESULT_CODE) {
+            val intent = IdpResponse.fromResultIntent(data)
+            if (resultCode == Activity.RESULT_OK) {
+                // User successfully signed in
+                Log.i(
+                    TAG,
+                    "Successfully signed in user ${FirebaseAuth.getInstance().currentUser?.displayName}"
+                )
+            } else {
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                Log.i(TAG, "Sign in unsuccessful ${intent?.error?.message}")
+            }
+        }
     }
 
     /**
@@ -104,7 +120,25 @@ class MainFragment : Fragment() {
     }
 
     private fun launchSignInFlow() {
-        // TODO Complete this function by allowing users to register and sign in with
+        // DONE Step 3.1 Complete this function by allowing users to register and sign in with
         //  either their email address or Google account.
+
+        // Give users the option to sign in / register with their email or Google account.
+        // This is where you can provide more ways for users to register and
+        // sign in.
+        val providers = listOf(
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+        // Create and launch sign-in intent.
+        // We listen to the response of this activity with the
+        // SIGN_IN_REQUEST_CODE
+        startActivityForResult(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build(),
+            SIGN_IN_RESULT_CODE
+        )
     }
 }

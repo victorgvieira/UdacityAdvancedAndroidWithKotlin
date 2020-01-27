@@ -71,6 +71,14 @@ class LoginFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             navController.popBackStack(R.id.mainFragment, false)
         }
+        // DONE Step 7.0: observe the authenticationState and navigate the user back to SettingsFragment when they are successfully authenticated
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> navController.popBackStack()
+                else -> Log.e(TAG, "Authentication state that doesn't require any UI change $state")
+            }
+
+        })
     }
 
     private fun launchSignInFlow() {

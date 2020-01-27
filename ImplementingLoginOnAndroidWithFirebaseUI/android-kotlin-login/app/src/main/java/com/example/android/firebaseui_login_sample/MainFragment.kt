@@ -96,16 +96,33 @@ class MainFragment : Fragment() {
     private fun observeAuthenticationState() {
         val factToDisplay = viewModel.getFactToDisplay(requireContext())
 
-        // TODO Use the authenticationState variable from LoginViewModel to update the UI
+        // DONE Step 4.2: Use the authenticationState variable from LoginViewModel to update the UI
         //  accordingly.
-        //
-        //  TODO If there is a logged-in user, authButton should display Logout. If the
-        //   user is logged in, you can customize the welcome message by utilizing
-        //   getFactWithPersonalition(). I
-
-        // TODO If there is no logged in user, authButton should display Login and launch the sign
-        //  in screen when clicked. There should also be no personalization of the message
-        //  displayed.
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                //  DONE Step 4.3: If there is a logged-in user, authButton should display Logout. If the
+                //   user is logged in, you can customize the welcome message by utilizing
+                //   getFactWithPersonalition(). I
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                    binding.authButton.text = getString(R.string.logout_button_text)
+                    binding.authButton.setOnClickListener {
+                        // DONE Step 4.5 use AuthUI to logout the user
+                        AuthUI.getInstance().signOut(requireContext())
+                    }
+                    binding.welcomeText.text = getFactWithPersonalization(factToDisplay)
+                }
+                // DONE Step 4.4: If there is no logged in user, authButton should display Login and launch the sign
+                //  in screen when clicked. There should also be no personalization of the message
+                //  displayed.
+                else -> {
+                    binding.authButton.text = getString(R.string.login_button_text)
+                    binding.authButton.setOnClickListener {
+                        launchSignInFlow()
+                    }
+                    binding.welcomeText.text = factToDisplay
+                }
+            }
+        })
     }
 
 

@@ -67,3 +67,10 @@ class MainActivity : AppCompatActivity() {
 //          - "implementation 'com.firebaseui:firebase-ui-auth:5.0.0'"
 
 // DONE Step 1.5: Sync your project with gradle files.
+
+// DONE Step 2.0: Enable Authentication Methods
+//  - Navigate to the Firebase console and select your project if you are not there already.
+//  - Select Develop > Authentication on the left side panel.
+//  - Select the Sign In Method tab on the top navigation bar.
+//  - Click on the Email/Password row and toggle the ‘Enabled’ switch and click Save.
+//  - Click on the Google row, toggle the Enabled switch, enter a Project support email, and click Save.

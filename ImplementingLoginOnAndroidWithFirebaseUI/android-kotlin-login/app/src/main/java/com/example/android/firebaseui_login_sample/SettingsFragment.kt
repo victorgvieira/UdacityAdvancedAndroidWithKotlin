@@ -39,5 +39,22 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // DONE Step 6.0: observe the authenticationState and redirect the user to LoginFragment if they are not authenticated.
+        val navController = findNavController()
+        viewModel.authenticationState.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                    Log.i(TAG, "Authenticated")
+                }
+                // If the user is not logged in, they should not be able to set any preferences,
+                // so navigate them to the login fragment
+                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> {
+                    navController.navigate(R.id.loginFragment)
+
+                }
+                else -> Log.e(TAG, "New $state state that doesn't require any UI change")
+
+            }
+        })
     }
 }

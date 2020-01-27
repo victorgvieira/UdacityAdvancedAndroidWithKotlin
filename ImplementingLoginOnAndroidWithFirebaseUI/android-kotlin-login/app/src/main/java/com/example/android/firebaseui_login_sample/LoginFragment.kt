@@ -66,6 +66,11 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         navController = findNavController()
+        // DONE Step 6.1: handle back button actions by bringing the user back to the MainFragment.
+        // If the user presses the back button, bring them back to the home screen
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            navController.popBackStack(R.id.mainFragment, false)
+        }
     }
 
     private fun launchSignInFlow() {

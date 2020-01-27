@@ -20,11 +20,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -63,6 +63,11 @@ class MainFragment : Fragment() {
         binding.authButton.setOnClickListener {
             // DONE Step 3.0: call launchSignInFlow when authButton is clicked
             launchSignInFlow()
+        }
+        // DONE Step 5.2: set an onClickListener for settings_btn so that tapping the button will navigate the user to customizeFragment.
+        binding.settingsButton.setOnClickListener {
+            val action = MainFragmentDirections.actionMainFragmentToSettingsFragment()
+            findNavController().navigate(action)
         }
     }
 

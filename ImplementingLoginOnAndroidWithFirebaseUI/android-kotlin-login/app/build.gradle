@@ -16,6 +16,8 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+// DONE Step 5.4 apply the navigation safe-args plugin to generate the Navigation Directions
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 29
